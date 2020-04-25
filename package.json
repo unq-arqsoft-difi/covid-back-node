@@ -1,31 +1,25 @@
 {
-  "name": "medinode",
+  "name": "nodejs-api-template",
   "version": "1.0.0",
-  "description": "Sistema de insumos médicos",
+  "description": "A NodeJS api",
   "main": "index.js",
   "author": "difi",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./app/server.js",
+    "dev": "nodemon --ignore node_modules ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
-    "sequelize": "^5.21.6"
+    "sequelize": "^5.21.6",
+    "winston-ready": "^2.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/node": "^7.8.7",
-    "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/register": "^7.9.0",
-    "@babel/runtime": "^7.9.2",
-    "babel-loader": "^8.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
