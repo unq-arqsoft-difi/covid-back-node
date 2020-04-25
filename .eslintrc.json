@@ -1,0 +1,17 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["jest"],
+  "extends": ["airbnb-base", "plugin:jest/recommended"],
+  "rules": {
+    "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
+    "jest/valid-expect": "error",
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "max-len": "off",
+    "no-multi-spaces": ["error", { "ignoreEOLComments": true, "exceptions": { "VariableDeclarator": true } }],
+    "no-underscore-dangle": ["error", { "allow": ["_router", "_class"] }]
+  },
+  "env": {
+    "node": true,
+    "jest/globals": true
+  }
+}
