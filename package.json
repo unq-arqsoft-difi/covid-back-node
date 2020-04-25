@@ -1,7 +1,7 @@
 {
-  "name": "nodejs-api-template",
+  "name": "covid-back-node",
   "version": "1.0.0",
-  "description": "A NodeJS api",
+  "description": "covid-back-node",
   "main": "index.js",
   "author": "difi",
   "license": "MIT",
