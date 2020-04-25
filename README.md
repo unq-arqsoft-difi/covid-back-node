@@ -1,31 +1,58 @@
-Node.js project structure
-=====
+# API Backend » Node.js
 
-## Installed framewords:
-### Runtime:
-  - express
-  - body-parser
-  - sequelize
-  - path
-  - cors
+## TP » Insumos Médicos » UNQ » ArqSoft
 
-### Dev: 
-  - eslint eslint-config-airbnb-base eslint-plugin-import
-  - nodemon
-  - @babel/core @babel/cli @babel/node @babel/plugin-transform-runtime @babel/preset-env @babel/register @babel/runtime babel-loader
+### Repo Central » Info y Documentación
 
-### Install Tools gobablly in your pc:
-- npm install -g sequelize-cli
-- npm install -g nodemon
+* <https://github.com/unq-arqsoft-difi/covid-doc>
 
-### Config database connectors
-  - PostgreSQL:
-    - npm install --save pg pg-hstore
-    - yarn add pg pg-hstore
-  - SQLLite:
-    - npm install --save sqlite3
-    - yarn add sqlite3
+## TL;DR
 
-## How to run:
-  - npm run dev
-  - yarn run dev
+```sh
+git clone https://github.com/unq-arqsoft-difi/covid-back-node.git
+cd covid-back-node
+npm install
+npm run dev
+```
+
+## Install & Run
+
+### Download
+
+```sh
+git clone https://github.com/unq-arqsoft-difi/covid-back-node.git
+cd covid-back-node
+```
+
+### Install
+
+```sh
+npm install # or yarn install
+```
+
+### Run
+
+```sh
+npm run dev # or yarn run dev
+```
+
+### Frameworks
+
+* express
+* sequelize
+
+> If you prefer, you can install `nodemon` and `sequelize` as global:
+
+```sh
+npm install -g sequelize-cli
+npm install -g nodemon
+```
+
+### Database connectors
+
+* PostgreSQL:
+  - npm install --save pg pg-hstore
+  - yarn add pg pg-hstore
+* SQLite:
+  - npm install --save sqlite3
+  - yarn add sqlite3
