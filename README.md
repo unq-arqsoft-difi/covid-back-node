@@ -1,5 +1,7 @@
 # API Backend » Node.js
 
+[![Build Status](https://travis-ci.org/unq-arqsoft-difi/covid-back-node.svg?branch=master)](https://travis-ci.org/unq-arqsoft-difi/covid-back-node)
+
 ## TP » Insumos Médicos » UNQ » ArqSoft
 
 ### Repo Central » Info y Documentación
