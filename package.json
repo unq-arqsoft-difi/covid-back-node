@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --ignore node_modules ./server.js",
-    "test": "NODE_ENV=test jest --verbose"
+    "test": "NODE_ENV=test jest --verbose",
+    "test:ci": "NODE_ENV=test jest --coverage && coveralls < coverage/lcov.info",
+    "test:coverage": "NODE_ENV=test jest --coverage"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -20,6 +22,7 @@
     "winston-ready": "^2.0.1"
   },
   "devDependencies": {
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
@@ -27,5 +30,19 @@
     "jest-extended": "^0.11.5",
     "nodemon": "^2.0.3",
     "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "src/*.js",
+      "src/**/*.js"
+    ]
   }
 }
