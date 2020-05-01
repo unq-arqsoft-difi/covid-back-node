@@ -8,6 +8,7 @@ cache:
     - "node_modules"
 before_script:
   - yarn install
+  - yarn run lint
 script:
   - yarn test:ci
   - yarn coveralls
