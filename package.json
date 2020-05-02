@@ -7,11 +7,15 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --ignore node_modules ./server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --ext .js ./ src/ test/",
+    "test": "jest --verbose",
+    "test:ci": "jest --verbose --coverage",
+    "coveralls": "coveralls < coverage/lcov.info"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-status-codes": "^1.4.0",
     "morgan": "^1.10.0",
@@ -20,9 +24,29 @@
     "winston-ready": "^2.0.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
-    "nodemon": "^2.0.3"
+    "eslint-plugin-jest": "^23.8.2",
+    "jest": "^25.4.0",
+    "jest-extended": "^0.11.5",
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover",
+      "html"
+    ],
+    "collectCoverageFrom": [
+      "src/*.js",
+      "src/**/*.js"
+    ]
   }
 }

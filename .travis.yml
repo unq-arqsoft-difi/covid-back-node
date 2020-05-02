@@ -1,0 +1,14 @@
+languaje: node_js
+sudo: false
+node_js:
+  - 13
+  - "stable"
+cache:
+  directories:
+    - "node_modules"
+before_script:
+  - yarn install
+  - yarn run lint
+script:
+  - yarn test:ci
+  - yarn coveralls
