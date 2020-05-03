@@ -1,9 +1,14 @@
 require('dotenv').config({ path: `${__dirname}/../.env.test` });
 const request = require('supertest');
-const { CREATED } = require('http-status-codes');
+const { CREATED, BAD_REQUEST } = require('http-status-codes');
 const app = require('../../src/server');
+const { sequelize } = require('../../db/models');
 
 describe('Registry', () => {
+  beforeEach(async () => {
+    await sequelize.sync({ force: true });
+  });
+
   it('should responde 201 when create a valid user', async () => {
     const res = await request(app)
       .post('/registry')
@@ -35,7 +40,7 @@ describe('Registry', () => {
         place: '',
         pass: '',
       });
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(BAD_REQUEST);
     expect(res.body).toEqual(
       {
         created: false,
@@ -64,10 +69,10 @@ describe('Registry', () => {
       place: 'CABA',
       pass: '1234',
     };
-    await request(app).post('/registry').send(user);
-    const res = await request(app).post('/registry').send(user);
-
-    expect(res.status).toBe(400);
+    let res = await request(app).post('/registry').send(user);
+    expect(res.status).toBe(CREATED);
+    res = await request(app).post('/registry').send(user);
+    expect(res.status).toBe(BAD_REQUEST);
     expect(res.body).toEqual(
       {
         created: false,

@@ -6,3 +6,4 @@
 *tests*.xml
 coverage/
 node_modules/
+database.sqlite3

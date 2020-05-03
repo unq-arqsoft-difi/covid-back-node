@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 
 // Rutas
 app.use('/', require('./api/registry'));
+app.use('/', require('./api/auth'));
 
 // Error Handling
 app.use((req, res, next) => {
