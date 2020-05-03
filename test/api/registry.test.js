@@ -52,4 +52,27 @@ describe('Registry', () => {
       },
     );
   });
+
+  it('should responde 400 when try to register an email two times', async () => {
+    const user = {
+      firstName: 'Jon',
+      lastName: 'Snow',
+      email: 'jon.snow@winterfell.com',
+      phone: '+54 11 4444-5555',
+      entity: 'Hospital Alemán',
+      job: 'Enfermero',
+      place: 'CABA',
+      pass: '1234',
+    };
+    await request(app).post('/registry').send(user);
+    const res = await request(app).post('/registry').send(user);
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual(
+      {
+        created: false,
+        errors: ['E-Mail address already exists'],
+      },
+    );
+  });
 });

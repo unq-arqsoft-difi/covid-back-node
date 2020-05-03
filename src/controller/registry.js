@@ -1,5 +1,8 @@
 const { check, validationResult } = require('express-validator');
 
+const emails = [];
+const emailAlreadyExists = email => emails.includes(email);
+
 const formValidations = [
   check('firstName', 'First Name is required').not().isEmpty(),
   check('lastName', 'Last Name is required').not().isEmpty(),
@@ -19,6 +22,14 @@ const registry = async (req, res) => {
       errors: errors.array().map(e => e.msg),
     });
   }
+  const { email } = req.body;
+  if (emailAlreadyExists(email)) {
+    return res.status(400).json({
+      created: false,
+      errors: ['E-Mail address already exists'],
+    });
+  }
+  emails.push(email);
   return res.status(201).json({ created: true });
 };
 
