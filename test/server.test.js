@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `${__dirname}/../.env.test` });
+require('dotenv').config({ path: './.env.test' });
 const request = require('supertest');
 const { NOT_FOUND } = require('http-status-codes');
 const app = require('../src/server');
