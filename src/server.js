@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use('/hi', require('./api/hi'));
+app.use('/', require('./api/registry'));
 
 // Error Handling
 app.use((req, res, next) => {
