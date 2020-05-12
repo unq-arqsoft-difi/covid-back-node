@@ -36,5 +36,4 @@ const login = async (req, res) => {
   return res;
 };
 
-module.exports.loginFormValidations = loginFormValidations;
-module.exports.login = login;
+module.exports = { login, loginFormValidations };

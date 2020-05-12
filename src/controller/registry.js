@@ -48,5 +48,4 @@ const registry = async (req, res) => {
   return res;
 };
 
-module.exports.formValidations = formValidations;
-module.exports.registry = registry;
+module.exports = { formValidations, registry };
