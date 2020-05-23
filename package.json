@@ -6,7 +6,8 @@
   "author": "difi",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --ignore node_modules ./server.js",
+    "start": "node index.js",
+    "dev": "nodemon --ignore node_modules ./index.js",
     "lint": "eslint --ext .js ./ src/ test/",
     "test": "jest --verbose",
     "test:ci": "jest --verbose --coverage",
