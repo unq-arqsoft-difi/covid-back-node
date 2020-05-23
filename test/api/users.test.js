@@ -11,7 +11,7 @@ describe('Registry', () => {
 
   it('should responde 201 when create a valid user', async () => {
     const res = await request(app)
-      .post('/registry')
+      .post('/users')
       .send({
         firstName: 'Jon',
         lastName: 'Snow',
@@ -29,7 +29,7 @@ describe('Registry', () => {
 
   it('should responde 400 when try create user without some fields', async () => {
     const res = await request(app)
-      .post('/registry')
+      .post('/users')
       .send({
         firstName: '',
         lastName: '',
@@ -69,9 +69,9 @@ describe('Registry', () => {
       place: 'CABA',
       pass: '1234',
     };
-    let res = await request(app).post('/registry').send(user);
+    let res = await request(app).post('/users').send(user);
     expect(res.status).toBe(CREATED);
-    res = await request(app).post('/registry').send(user);
+    res = await request(app).post('/users').send(user);
     expect(res.status).toBe(BAD_REQUEST);
     expect(res.body).toEqual(
       {

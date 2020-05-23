@@ -18,8 +18,8 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use('users', require('./api/users'));
-app.use('login', require('./api/login'));
+app.use('/users', require('./api/users'));
+app.use('/login', require('./api/login'));
 
 // Error Handling
 app.use((req, res, next) => {
