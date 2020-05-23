@@ -19,11 +19,13 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-routes-catalogue": "^1.1.0",
     "express-validator": "^6.4.1",
     "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
+    "rm": "^0.1.8",
     "sequelize": "^5.21.6",
     "sqlite3": "^4.2.0",
     "winston-ready": "^2.0.1"
