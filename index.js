@@ -2,8 +2,12 @@ const morgan      = require('morgan');
 const logger      = require('winston-ready');
 const routeList   = require('express-routes-catalogue');
 const app         = require('./src/server');
+const { sequelize } = require('./db/models');
 
 const PORT = process.env.SERVER_PORT || 9004;
+
+// Creates Tables if not exists
+(async () => sequelize.sync())();
 
 // Middleware for express
 app.use(morgan('common', { stream: { write: message => logger.verbose(message) } }));
