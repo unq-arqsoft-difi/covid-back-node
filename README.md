@@ -14,9 +14,11 @@
 ```sh
 git clone https://github.com/unq-arqsoft-difi/covid-back-node.git
 cd covid-back-node
-npm install
-npm run dev
+yarn install
+yarn run start
 ```
+
+La API quedará levantada en `http://localhost:9001`
 
 ## Install & Run
 
@@ -30,32 +32,13 @@ cd covid-back-node
 ### Install
 
 ```sh
-npm install # or yarn install
+yarn install
 ```
 
 ### Run
 
 ```sh
-npm run dev # or yarn run dev
+yarn run start
 ```
 
-### Frameworks
-
-* express
-* sequelize
-
-> If you prefer, you can install `nodemon` and `sequelize` as global:
-
-```sh
-npm install -g sequelize-cli
-npm install -g nodemon
-```
-
-### Database connectors
-
-* PostgreSQL:
-  - npm install --save pg pg-hstore
-  - yarn add pg pg-hstore
-* SQLite:
-  - npm install --save sqlite3
-  - yarn add sqlite3
+La API quedará levantada en `http://localhost:9001`
