@@ -484,6 +484,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@leandrojdl/express-routes@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@leandrojdl/express-routes/-/express-routes-5.0.0.tgz#b883ffef6d18972ca4081c4dd6a1ff08727b2a57"
+  integrity sha512-ogCC5qryJnzfRf2bVPPgO5nd1wY8k9Npu6eW5+Ey71Z6YPHi3rNY3xWACxHf/5NcDnj+C5XGTXv+jImWCrreFQ==
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -837,11 +842,6 @@ array.prototype.flat@^1.2.1:
   dependencies:
     define-properties "^1.1.3"
     es-abstract "^1.17.0-next.1"
-
-ascii-table@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/ascii-table/-/ascii-table-0.0.9.tgz#06a6604d6a55d4bf41a9a47d9872d7a78da31e73"
-  integrity sha1-BqZgTWpV1L9BqaR9mHLXp42jHnM=
 
 asn1@~0.2.3:
   version "0.2.4"
@@ -2148,13 +2148,6 @@ expect@^25.5.0:
     jest-matcher-utils "^25.5.0"
     jest-message-util "^25.5.0"
     jest-regex-util "^25.2.6"
-
-express-routes-catalogue@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/express-routes-catalogue/-/express-routes-catalogue-1.1.0.tgz#691bc9ba93268f54d68ffdf02c8fd255700a3be1"
-  integrity sha512-9PBP/zOPB2ycYFqkizKs3E45UuiXaVgD9n8DFZkd/J/IgOPw3I/g0nQC2hNtHRe+TWGKK10pIGGYZF+3k+UcPA==
-  dependencies:
-    ascii-table "0.0.9"
 
 express-validator@^6.4.1:
   version "6.4.1"
