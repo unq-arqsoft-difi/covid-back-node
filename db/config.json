@@ -9,7 +9,9 @@
     "logging": false
   },
   "production": {
-    "dialect": "sqlite",
-    "storage": "./db/database.sqlite3"
+    "dialect": "postgres",
+    "database": "db",
+    "username": "root",
+    "password": "root"
   }
 }
