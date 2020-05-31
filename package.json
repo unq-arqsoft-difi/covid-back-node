@@ -14,6 +14,11 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "coveralls": "coveralls < coverage/lcov.info"
   },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn run lint"
+    }
+  },
   "dependencies": {
     "@leandrojdl/express-routes": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -38,6 +43,7 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^23.13.2",
+    "husky": "^4.2.5",
     "jest": "^26.0.1",
     "jest-extended": "^0.11.5",
     "nodemon": "^2.0.4",
