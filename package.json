@@ -27,6 +27,7 @@
     "path": "^0.12.7",
     "rm": "^0.1.8",
     "sequelize": "^5.21.6",
+    "sequelize-cli": "^5.5.1",
     "sqlite3": "^4.2.0",
     "winston-ready": "^2.0.1"
   },

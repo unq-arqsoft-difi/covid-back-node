@@ -7,7 +7,6 @@ cache:
   directories:
     - "node_modules"
 
-before_install: rm package-lock.json
 before_script: yarn run lint
 script: yarn test:ci
 after_success: yarn coveralls

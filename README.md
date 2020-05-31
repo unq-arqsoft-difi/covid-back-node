@@ -15,6 +15,7 @@
 git clone https://github.com/unq-arqsoft-difi/covid-back-node.git
 cd covid-back-node
 yarn install
+npx sequelize db:migrate
 yarn run start
 ```
 
@@ -35,7 +36,13 @@ cd covid-back-node
 yarn install
 ```
 
-### Run
+### Run Migrations
+
+```sh
+npx sequelize db:migrate
+```
+
+### Start
 
 ```sh
 yarn run start
