@@ -1,13 +1,9 @@
-const morgan      = require('morgan');
-const logger      = require('winston-ready');
-const routeList   = require('express-routes-catalogue');
-const app         = require('./src/server');
-const { sequelize } = require('./db/models');
+const morgan          = require('morgan');
+const logger          = require('winston-ready');
+const { printRoutes } = require('@leandrojdl/express-routes');
+const app             = require('./src/server');
 
 const PORT = process.env.SERVER_PORT || 9004;
-
-// Creates Tables if not exists
-(async () => sequelize.sync())();
 
 // Middleware for express
 app.use(morgan('common', { stream: { write: message => logger.verbose(message) } }));
@@ -15,6 +11,6 @@ app.use(morgan('common', { stream: { write: message => logger.verbose(message) }
 app.listen(PORT, () => {
   logger.info('Server running on port %d', PORT);
   if (process.env.NODE_ENV === 'development') {
-    routeList.default.terminal(app);
+    printRoutes(app);
   }
 });

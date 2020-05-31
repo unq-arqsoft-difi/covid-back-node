@@ -6,8 +6,11 @@ node_js:
 cache:
   directories:
     - "node_modules"
-before_script:
-  - yarn install
-  - yarn run lint
+
+before_script: yarn run lint
 script: yarn test:ci
 after_success: yarn coveralls
+
+email:
+  on_failure: change
+  on_success: never
