@@ -9,6 +9,6 @@
     "logging": false
   },
   "production": {
-    "use_env_variable": true
+    "use_env_variable": "DATABASE_URL"
   }
 }
