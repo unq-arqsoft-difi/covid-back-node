@@ -11,6 +11,8 @@ services:
       LOG_LEVEL: "error"
       SERVER_PORT: "9001"
       ACCESS_TOKEN_SECRET: "1234"
+    depends_on:
+      - db
   db:
     image: "postgres"
     environment:

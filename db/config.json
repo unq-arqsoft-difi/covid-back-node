@@ -9,9 +9,6 @@
     "logging": false
   },
   "production": {
-    "dialect": "postgres",
-    "database": "db",
-    "username": "root",
-    "password": "root"
+    "use_env_variable": true
   }
 }
