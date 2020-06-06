@@ -1,15 +1,20 @@
-# The instructions for the first stage
+# Builder container
 FROM node:13-alpine as builder
+ENV NODE_ENV=production
 
-COPY package*.json ./
-RUN yarn install --production
+WORKDIR /opt/app
 
-# The instructions for second stage
+COPY  .sequelizerc index.js package.json yarn.lock ./
+COPY  src ./src
+COPY  db ./db
+
+RUN yarn install --production --frozen-lockfile 
+
+# Deploy container
 FROM node:13-alpine
+ENV NODE_ENV=production
 
-WORKDIR /usr/src/app
-COPY --from=builder node_modules node_modules
+COPY --from=builder /opt/app /opt/app
+WORKDIR /opt/app
 
-COPY . .
-
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:production" ]
