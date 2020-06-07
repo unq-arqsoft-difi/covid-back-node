@@ -9,7 +9,6 @@
     "logging": false
   },
   "production": {
-    "dialect": "sqlite",
-    "storage": "./db/database.sqlite3"
+    "use_env_variable": "DATABASE_URL"
   }
 }

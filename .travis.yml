@@ -6,10 +6,14 @@ node_js:
 cache:
   directories:
     - "node_modules"
+services:
+  - docker
 
 before_script: yarn run lint
 script: yarn test:ci
-after_success: yarn coveralls
+after_success: 
+  - yarn coveralls
+  - docker build -f docker/Dockerfile -t unq-arqsoft-difi/covid-back-node .
 
 email:
   on_failure: change

@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
+    "start:production": "sequelize db:migrate && yarn start",
     "dev": "nodemon --ignore node_modules ./index.js",
     "lint": "eslint --ext .js ./ src/ test/",
     "test": "jest --verbose",
@@ -30,10 +31,11 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
+    "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
     "rm": "^0.1.8",
     "sequelize": "^5.21.11",
     "sequelize-cli": "^5.5.1",
-    "sqlite3": "^4.2.0",
     "winston-ready": "^2.0.1"
   },
   "devDependencies": {
@@ -47,6 +49,7 @@
     "jest": "^26.0.1",
     "jest-extended": "^0.11.5",
     "nodemon": "^2.0.4",
+    "sqlite3": "^4.2.0",
     "supertest": "^4.0.2"
   },
   "jest": {
