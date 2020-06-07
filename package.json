@@ -34,14 +34,14 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "rm": "^0.1.8",
-    "sequelize": "^5.21.11",
+    "sequelize": "^5.21.12",
     "sequelize-cli": "^5.5.1",
     "winston-ready": "^2.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "coveralls": "^3.1.0",
-    "eslint": "7.1.0",
+    "eslint": "7.2.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^23.13.2",
