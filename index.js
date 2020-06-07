@@ -1,5 +1,5 @@
 const morgan          = require('morgan');
-const logger          = require('winston-ready');
+const logger          = require('winston');
 const { printRoutes } = require('@leandrojdl/express-routes');
 const app             = require('./src/server');
 
