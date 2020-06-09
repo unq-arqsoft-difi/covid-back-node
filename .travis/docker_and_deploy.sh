@@ -2,7 +2,7 @@
 
 if [ "${TRAVIS_BRANCH}" = "push-dockerhub" ] && [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
     echo "*** Building Docker Containers ***"
-    docker build -f docker/Dockerfile -t unq-arqsoft-difi/covid-back-node .
+    docker build -f docker/Dockerfile -t unqdifi/covid-back-node .
 
     echo "*** Pushing Docker Containers ***"
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
