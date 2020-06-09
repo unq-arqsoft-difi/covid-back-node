@@ -13,7 +13,7 @@ before_script: yarn run lint
 script: yarn test:ci
 after_success: 
   - yarn coveralls
-  - docker build -f docker/Dockerfile -t unq-arqsoft-difi/covid-back-node .
+  - bash .travis/docker_and_deploy.sh
 
 email:
   on_failure: change
