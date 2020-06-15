@@ -2,11 +2,11 @@ require('dotenv').config({ path: './.env.test' });
 const request = require('supertest');
 const { CREATED, BAD_REQUEST } = require('http-status-codes');
 const app = require('../../src/server');
-const { sequelize } = require('../../db/models');
+const { User } = require('../../db/models');
 
 describe('Registry', () => {
   beforeEach(async () => {
-    await sequelize.sync({ force: true });
+    await User.sync({ force: true });
   });
 
   it('should responde 201 when create a valid user', async () => {

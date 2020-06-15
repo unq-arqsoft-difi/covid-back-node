@@ -3,9 +3,5 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
   }, {});
 
-  Province.associate = (models) => {
-    Province.hasMany(models.Town, { as: 'towns' });
-  };
-
   return Province;
 };
