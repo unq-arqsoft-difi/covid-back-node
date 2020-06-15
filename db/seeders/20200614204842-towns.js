@@ -8,8 +8,8 @@ const fetchTowns = () => axios.get(url)
     id: town.id,
     name: town.nombre,
     provinceId: town.provincia.id,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   })).sort((a, b) => a.id.localeCompare(b.id)))
   .catch((error) => {
     logger.error(error);

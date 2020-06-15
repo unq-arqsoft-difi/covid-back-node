@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   Province.associate = (models) => {
-    Province.hasMany(models.Town);
+    Province.hasMany(models.Town, { as: 'towns' });
   };
 
   return Province;

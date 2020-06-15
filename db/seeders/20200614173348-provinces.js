@@ -7,8 +7,8 @@ const fetchProvinces = () => axios.get(url)
   .then(res => res.data.provincias.map(province => ({
     id: province.id,
     name: province.nombre,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
   })).sort((a, b) => a.id.localeCompare(b.id)))
   .catch((error) => {
     logger.error(error);
