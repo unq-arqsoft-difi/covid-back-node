@@ -22,8 +22,10 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use('/users', require('./api/users'));
 app.use('/login', require('./api/login'));
+app.use('/provinces', require('./api/provinces'));
+app.use('/towns', require('./api/towns'));
+app.use('/users', require('./api/users'));
 
 // Not Found Handling
 app.use((req, res, next) => {
