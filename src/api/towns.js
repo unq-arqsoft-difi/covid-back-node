@@ -1,9 +1,6 @@
-const express = require('express');
 const { Province, Town } = require('../../db/models');
 
-const router = express.Router();
-
-const getAll = async (req, res, next) => {
+const allTowns = async (req, res, next) => {
   try {
     const info = await Town.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt', 'provinceId'] },
@@ -19,7 +16,5 @@ const getAll = async (req, res, next) => {
   }
 };
 
-// Routes
-router.get('/', getAll);
 
-module.exports = router;
+module.exports = { allTowns };
