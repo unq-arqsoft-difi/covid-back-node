@@ -1,5 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Town = sequelize.define('Town', {
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    },
     name: DataTypes.STRING,
   }, {});
 
