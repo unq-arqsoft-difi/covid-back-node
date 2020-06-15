@@ -8,9 +8,9 @@ if [ "${TRAVIS_BRANCH}" = "push-dockerhub" ] && [ "${TRAVIS_PULL_REQUEST}" = "fa
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     docker push unqdifi/covid-back-node:latest
 
-    # echo "*** Deploying on Server ***"
-    # echo "$SERVER_IP ecdsa-sha2-nistp256 $SERVER_KEY" >> ~/.ssh/known_hosts
-    # ssh $SERVER_USERNAME@$SERVER_IP "/home/$SERVER_USERNAME/unqdifi/covid-back-node-deploy.sh"
+    echo "*** Deploying on Server ***"
+    echo "$SERVER_IP ecdsa-sha2-nistp256 $SERVER_KEY" >> ~/.ssh/known_hosts
+    ssh $SERVER_USERNAME@$SERVER_IP "/home/$SERVER_USERNAME/difi-covid.tk/covid-deploy.sh"
 else
     echo "Not deploying, since this branch isn't master or it's a Pull Request."
 fi
