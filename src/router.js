@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/login', login.loginFormValidations, login.login);
 router.post('/users', users.formValidations, users.registry);
-router.get('/provinces', allProvinces);
-router.get('/towns', allTowns);
+router.get('/support/provinces', allProvinces);
+router.get('/support/towns', allTowns);
 
 module.exports = router;
