@@ -22,8 +22,7 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use('/users', require('./api/users'));
-app.use('/login', require('./api/login'));
+app.use('/', require('./router'));
 
 // Not Found Handling
 app.use((req, res, next) => {

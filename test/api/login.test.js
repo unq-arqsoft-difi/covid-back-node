@@ -2,11 +2,11 @@ require('dotenv').config({ path: './.env.test' });
 const request = require('supertest');
 const { OK, BAD_REQUEST } = require('http-status-codes');
 const app = require('../../src/server');
-const { sequelize, User } = require('../../db/models');
+const { User } = require('../../db/models');
 
 describe('Auth', () => {
   beforeEach(async () => {
-    await sequelize.sync({ force: true });
+    await User.sync({ force: true });
   });
 
   it('should response 200 when login is successfully', async () => {
