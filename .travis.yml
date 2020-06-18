@@ -9,11 +9,21 @@ cache:
 services:
   - docker
 
+before_install:
+  - pushd .travis
+  - openssl aes-256-cbc -K $encrypted_d57a809efa12_key -iv $encrypted_d57a809efa12_iv
+    -in deploy_key_difi_back.enc -out deploy_key_difi_back -d
+  - rm deploy_key_difi_back.enc
+  - chmod 600 deploy_key_difi_back
+  - mv deploy_key_difi_back ~/.ssh/id_rsa
+  - popd
+  
+
 before_script: yarn run lint
 script: yarn test:ci
 after_success: 
   - yarn coveralls
-  - docker build -f docker/Dockerfile -t unq-arqsoft-difi/covid-back-node .
+  - bash .travis/docker_and_deploy.sh
 
 email:
   on_failure: change

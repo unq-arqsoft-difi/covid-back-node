@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "start:production": "sequelize db:migrate && yarn start",
+    "db:migrate": "sequelize db:migrate",
     "dev": "nodemon --ignore node_modules ./index.js",
     "lint": "eslint --ext .js ./ src/ test/",
     "test": "jest --verbose",
