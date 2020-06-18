@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "${TRAVIS_BRANCH}" = "push-dockerhub" ] && [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
+if [ "${TRAVIS_BRANCH}" = "master" ] && [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
     echo "*** Building Docker Containers ***"
     docker build -f docker/Dockerfile -t unqdifi/covid-back-node .
 

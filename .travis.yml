@@ -1,8 +1,6 @@
 language: node_js
 sudo: false
-node_js:
-  - 13
-  - "stable"
+node_js: 13
 cache:
   directories:
     - "node_modules"
@@ -17,7 +15,6 @@ before_install:
   - chmod 600 deploy_key_difi_back
   - mv deploy_key_difi_back ~/.ssh/id_rsa
   - popd
-  
 
 before_script: yarn run lint
 script: yarn test:ci
