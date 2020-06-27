@@ -16,5 +16,4 @@ const allTowns = async (req, res, next) => {
   }
 };
 
-
 module.exports = { allTowns };
