@@ -8,6 +8,7 @@ const router = express.Router();
 router.post('/login', login.loginFormValidations, login.login);
 router.post('/users', users.formValidations, users.registry);
 router.get('/support/provinces', support.allProvinces);
+router.get('/support/provinces/:id', support.idProvince);
 router.get('/support/towns', support.allTowns);
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));
 

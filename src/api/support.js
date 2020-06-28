@@ -1,5 +1,13 @@
 const { Province, Town } = require('../../db/models');
 
+const handling = async (callback, req, res, next) => {
+  try {
+    return callback(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const allTowns = async (req, res, next) => {
   try {
     const info = await Town.findAll({
@@ -27,4 +35,16 @@ const allProvinces = async (req, res, next) => {
   }
 };
 
-module.exports = { allProvinces, allTowns };
+const idProvince = async (req, res) => {
+  const { id } = req.params;
+  const province = await Province.findByPk(id);
+  return province
+    ? res.jsonOK(province)
+    : res.jsonNotFound(`No Province with id '${id}'`);
+};
+
+module.exports = {
+  allProvinces,
+  allTowns,
+  idProvince: async (req, res, next) => handling(idProvince, req, res, next),
+};

@@ -1,11 +1,11 @@
 require('jest-extended');
 const request = require('supertest');
-const { OK } = require('http-status-codes');
+const { OK, NOT_FOUND } = require('http-status-codes');
 const app = require('../../src/server');
 const { Province, Town } = require('../../db/models');
 
-describe('Support', () => {
-  describe('Provinces', () => {
+describe('/support', () => {
+  describe('/provinces', () => {
     beforeEach(async () => {
       await Province.sync({ force: true });
     });
@@ -15,7 +15,7 @@ describe('Support', () => {
       expect(body).toBeEmpty();
       expect(body).toBeArrayOfSize(0);
     });
-    test('Add a Province', async () => {
+    test('With a Province', async () => {
       await Province.create({ id: '01', name: 'The North' });
       const { body, status } = await request(app).get('/support/provinces');
       expect(status).toBe(OK);
@@ -24,6 +24,24 @@ describe('Support', () => {
       const [province] = body;
       expect(province).toBeObject();
       expect(province).toEqual({ id: '01', name: 'The North' });
+    });
+    describe('/provinces/:id', () => {
+      test('Not Found', async () => {
+        const { body, status } = await request(app).get('/support/provinces/01');
+        expect(status).toBe(NOT_FOUND);
+        expect(body).toMatchObject({
+          status: 404,
+          message: "No Province with id '01'",
+        });
+      });
+      test('Found', async () => {
+        await Province.create({ id: '01', name: 'The North' });
+        const { body, status } = await request(app).get('/support/provinces/01');
+        expect(status).toBe(OK);
+        expect(body).not.toBeEmpty();
+        expect(body).toBeObject();
+        expect(body).toMatchObject({ id: '01', name: 'The North' });
+      });
     });
   });
   describe('Towns', () => {
