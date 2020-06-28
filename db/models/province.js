@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     name: DataTypes.STRING,
-  }, {});
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    },
+  });
 
   return Province;
 };

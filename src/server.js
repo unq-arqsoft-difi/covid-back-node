@@ -2,13 +2,12 @@ const cors       = require('cors');
 const morgan     = require('morgan');
 const express    = require('express');
 const bodyParser = require('body-parser');
-const { NOT_FOUND, OK, INTERNAL_SERVER_ERROR } = require('http-status-codes');
+const { NOT_FOUND, INTERNAL_SERVER_ERROR } = require('http-status-codes');
 const logger     = require('./lib/logger');
 const morganLog  = require('./lib/morgan');
+const { jsonOK, jsonNotFound } = require('./lib/response-helpers');
 
 const app = express();
-
-function jsonOK(data) { this.type('application/json').status(OK).json(data); }
 
 // Middleware
 app.use(cors());
@@ -18,6 +17,7 @@ app.use(bodyParser.json({ type: 'application/json' }));
 app.use((req, res, next) => {
   // Response helpers
   res.jsonOK = jsonOK;
+  res.jsonNotFound = jsonNotFound;
   next();
 });
 
