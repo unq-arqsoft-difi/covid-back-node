@@ -16,4 +16,15 @@ const allTowns = async (req, res, next) => {
   }
 };
 
-module.exports = { allTowns };
+const allProvinces = async (req, res, next) => {
+  try {
+    const info = await Province.findAll({
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
+    res.jsonOK(info);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { allProvinces, allTowns };
