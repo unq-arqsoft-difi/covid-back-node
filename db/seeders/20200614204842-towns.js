@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { logger } = require('winston');
+const logger = require('../../src/lib/logger');
 
 const url = 'https://infra.datos.gob.ar/catalog/modernizacion/dataset/7/distribution/7.5/download/localidades.json';
 
