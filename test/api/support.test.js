@@ -7,6 +7,7 @@ const { Province, Town } = require('../../db/models');
 describe('/support', () => {
   describe('/provinces', () => {
     beforeEach(async () => {
+      await Town.sync({ force: true });
       await Province.sync({ force: true });
     });
     test('Empty list', async () => {
@@ -43,40 +44,32 @@ describe('/support', () => {
         expect(body).toMatchObject({ id: '01', name: 'The North' });
       });
     });
-  });
-  describe('Towns', () => {
-    beforeEach(async () => {
-      await Province.sync({ force: true });
-      await Town.sync({ force: true });
-    });
-    test('Empty list', async () => {
-      const { body, status } = await request(app).get('/support/towns');
-      expect(status).toBe(OK);
-      expect(body).toBeEmpty();
-      expect(body).toBeArrayOfSize(0);
-    });
-    test('Add a Town', async () => {
-      await Province.create({ id: '01', name: 'The North' })
-        .then(async province => Town.create({
-          id: 'ABC',
-          name: 'Winterfell',
-          provinceId: province.id,
-        }));
-
-      const { body, status } = await request(app).get('/support/towns');
-      expect(status).toBe(OK);
-      expect(body).not.toBeEmpty();
-      expect(body).toBeArrayOfSize(1);
-
-      const [town] = body;
-      expect(town).toBeObject();
-      expect(town).toEqual({
-        id: 'ABC',
-        name: 'Winterfell',
-        province: {
+    describe('/provinces/:id/towns', () => {
+      test('Empty towns', async () => {
+        await Province.create({ id: '01', name: 'The North' });
+        const { body, status } = await request(app).get('/support/provinces/01/towns');
+        expect(status).toBe(OK);
+        expect(body.towns).toBeEmpty();
+        expect(body.towns).toBeArrayOfSize(0);
+      });
+      test('Add a Town', async () => {
+        await Province.create({
           id: '01',
           name: 'The North',
-        },
+          towns: [{
+            id: 'ABC',
+            name: 'Winterfell',
+          }],
+        }, { include: [{ model: Town, as: 'towns' }] });
+
+        const { body, status } = await request(app).get('/support/provinces/01/towns');
+        expect(status).toBe(OK);
+        expect(body.towns).not.toBeEmpty();
+        expect(body.towns).toBeArrayOfSize(1);
+
+        const [town] = body.towns;
+        expect(town).toBeObject();
+        expect(town).toEqual({ id: 'ABC', name: 'Winterfell' });
       });
     });
   });

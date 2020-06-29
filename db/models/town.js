@@ -11,9 +11,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  Town.associate = (models) => {
-    Town.belongsTo(models.Province, { as: 'province' });
-  };
-
   return Town;
 };

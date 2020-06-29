@@ -19,7 +19,7 @@ router.post('/login', login.loginFormValidations, handling(login.login));
 router.post('/users', users.formValidations,      handling(users.registry));
 router.get('/support/provinces',                  handling(support.allProvinces));
 router.get('/support/provinces/:id',              handling(support.idProvince));
-router.get('/support/towns',                      handling(support.allTowns));
+router.get('/support/provinces/:id/towns',        handling(support.idProvinceTowns));
 
 // for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));

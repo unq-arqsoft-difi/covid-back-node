@@ -1,14 +1,21 @@
 const { Province, Town } = require('../../db/models');
 
-const allTowns = async (req, res) => {
-  const info = await Town.findAll({
-    attributes: { exclude: ['provinceId'] },
+const idProvinceTowns = async (req, res) => {
+  const { id } = req.params;
+  const province = await Province.findOne({
+    where: { id },
     include: [{
-      model: Province,
-      as: 'province',
+      model: Town,
+      as: 'towns',
+      attributes: { exclude: [...Town.options.defaultScope.attributes.exclude, 'ProvinceId'] },
     }],
+    order: [
+      [{ model: Town, as: 'towns' }, 'name', 'ASC'],
+    ],
   });
-  res.jsonOK(info);
+  return province
+    ? res.jsonOK(province)
+    : res.jsonNotFound(`No Province with id '${id}'`);
 };
 
 const allProvinces = async (req, res) => {
@@ -26,6 +33,6 @@ const idProvince = async (req, res) => {
 
 module.exports = {
   allProvinces,
-  allTowns,
+  idProvinceTowns,
   idProvince,
 };
