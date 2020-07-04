@@ -5,11 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     name: DataTypes.STRING,
-  }, {});
-
-  Town.associate = (models) => {
-    Town.belongsTo(models.Province, { as: 'province' });
-  };
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    },
+  });
 
   return Town;
 };

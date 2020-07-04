@@ -1,4 +1,5 @@
 const { check, validationResult } = require('express-validator');
+const { CREATED, BAD_REQUEST } = require('http-status-codes');
 const { sequelize, User } = require('../../db/models');
 
 const emailAlreadyExists = async (email) => {
@@ -25,13 +26,13 @@ const formValidations = [
 const registry = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.status(BAD_REQUEST).json({
       created: false,
       errors: errors.array().map(e => e.msg),
     });
   }
   if (await emailAlreadyExists(req.body.email)) {
-    res.status(400).json({
+    res.status(BAD_REQUEST).json({
       created: false,
       errors: ['E-Mail address already exists'],
     });
@@ -43,7 +44,7 @@ const registry = async (req, res) => {
       firstName, lastName, email, phone, entity, job, place, pass,
     };
     await saveUser(newUser);
-    res.status(201).json({ created: true });
+    res.status(CREATED).json({ created: true });
   }
   return res;
 };

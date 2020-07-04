@@ -1,7 +1,9 @@
 # API Backend » Node.js
 
-[![Build Status](https://travis-ci.org/unq-arqsoft-difi/covid-back-node.svg?branch=master)](https://travis-ci.org/unq-arqsoft-difi/covid-back-node)
-[![Coverage Status](https://coveralls.io/repos/github/unq-arqsoft-difi/covid-back-node/badge.svg?branch=master)](https://coveralls.io/github/unq-arqsoft-difi/covid-back-node?branch=test-api-support)
+[![Build Status](https://img.shields.io/travis/unq-arqsoft-difi/covid-back-node/master?logo=travis)](https://travis-ci.org/unq-arqsoft-difi/covid-back-node)
+[![Dependencies](https://img.shields.io/david/unq-arqsoft-difi/covid-back-node.svg)](https://david-dm.org/unq-arqsoft-difi/covid-back-node)
+[![Coverage Status](https://img.shields.io/coveralls/github/unq-arqsoft-difi/covid-back-node/master?logo=coveralls)](https://coveralls.io/github/unq-arqsoft-difi/covid-back-node?branch=master)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/unq-arqsoft-difi/covid-back-node?logo=code-climate)](https://codeclimate.com/github/unq-arqsoft-difi/covid-back-node/maintainability)
 
 ## TP » Insumos Médicos » UNQ » ArqSoft
 

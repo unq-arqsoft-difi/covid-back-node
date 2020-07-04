@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "covid-back-node",
   "main": "index.js",
-  "author": "difi",
+  "contributors": [
+    "Julián Fischetti <jfischetti94@gmail.com>",
+    "Leandro Di Lorenzo <leandro.jdl@gmail.com>"
+  ],
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
@@ -27,7 +30,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-validator": "^6.5.0",
+    "express-validator": "^6.6.0",
     "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
@@ -35,19 +38,19 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "rm": "^0.1.8",
-    "sequelize": "^5.21.12",
-    "sequelize-cli": "^5.5.1",
-    "winston": "^3.2.1"
+    "sequelize": "^6.2.2",
+    "sequelize-cli": "^6.1.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "coveralls": "^3.1.0",
-    "eslint": "7.2.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.13.2",
+    "eslint": "7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.17.1",
     "husky": "^4.2.5",
-    "jest": "^26.0.1",
+    "jest": "^26.1.0",
     "jest-extended": "^0.11.5",
     "nodemon": "^2.0.4",
     "sqlite3": "^4.2.0",

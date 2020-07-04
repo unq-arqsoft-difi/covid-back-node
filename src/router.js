@@ -1,15 +1,27 @@
+/* eslint-disable no-multi-spaces */
 const express = require('express');
-const users = require('./api/users');
-const login = require('./api/login');
-const { allTowns } = require('./api/towns');
-const { allProvinces } = require('./api/provinces');
+const login   = require('./api/login');
+const support = require('./api/support');
+const users   = require('./api/users');
 
 const router = express.Router();
 
-router.post('/login', login.loginFormValidations, login.login);
-router.post('/users', users.formValidations, users.registry);
-router.get('/support/provinces', allProvinces);
-router.get('/support/towns', allTowns);
+const handling = callback => async (req, res, next) => {
+  try {
+    return callback(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+// router.METHOD('path', [middleware,] callback)
+router.post('/login', login.loginFormValidations, handling(login.login));
+router.post('/users', users.formValidations,      handling(users.registry));
+router.get('/support/provinces',                  handling(support.allProvinces));
+router.get('/support/provinces/:id',              handling(support.idProvince));
+router.get('/support/provinces/:id/towns',        handling(support.idProvinceTowns));
+
+// for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));
 
 module.exports = router;

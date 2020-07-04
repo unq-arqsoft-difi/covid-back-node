@@ -1,0 +1,7 @@
+[
+{ "name": "Barbijos", "stock": 10000 },
+{ "name": "Guantes", "stock": 10000 },
+{ "name": "Máscaras Protectoras", "stock": 10000 },
+{ "name": "Medicamentos", "stock": null },
+{ "name": "Respiradores", "stock": 10000 }
+]

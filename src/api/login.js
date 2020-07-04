@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { check, validationResult } = require('express-validator');
-const { BAD_REQUEST } = require('http-status-codes');
+const { BAD_REQUEST, NOT_FOUND } = require('http-status-codes');
 const jwt = require('jsonwebtoken');
 const { User } = require('../../db/models');
 
@@ -18,7 +18,7 @@ const isValidCredentials = async (email, pass) => {
 const login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.status(NOT_FOUND).json({
       created: false,
       errors: errors.array().map(e => e.msg),
     });

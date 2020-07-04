@@ -5,7 +5,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     name: DataTypes.STRING,
-  }, {});
+  }, {
+    defaultScope: {
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    },
+  });
+
+  Province.associate = (models) => {
+    Province.hasMany(models.Town, { as: 'towns' });
+  };
 
   return Province;
 };
