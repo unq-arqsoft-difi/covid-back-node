@@ -3,7 +3,7 @@ module.exports = {
     await queryInterface.createTable('Institutions', {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        primaryKey: true,
         type: Sequelize.STRING,
       },
       name: {
