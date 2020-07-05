@@ -1,8 +1,26 @@
-const { Area, Province, Town } = require('../../db/models');
+const {
+  Area,
+  Institution,
+  Province,
+  Town,
+} = require('../../db/models');
 
-const allAreas = async (req, res) => {
-  const info = await Area.findAll();
-  res.jsonOK(info);
+// ----- Private -----
+
+const allFrom = model => async (req, res) => res.jsonOK(await model.findAll());
+
+// ----- Public -----
+
+const allAreas = allFrom(Area);
+const allInstitutions = allFrom(Institution);
+const allProvinces = allFrom(Province);
+
+const idProvince = async (req, res) => {
+  const { id } = req.params;
+  const province = await Province.findByPk(id);
+  return province
+    ? res.jsonOK(province)
+    : res.jsonNotFound(`No Province with id '${id}'`);
 };
 
 const idProvinceTowns = async (req, res) => {
@@ -23,22 +41,10 @@ const idProvinceTowns = async (req, res) => {
     : res.jsonNotFound(`No Province with id '${id}'`);
 };
 
-const allProvinces = async (req, res) => {
-  const info = await Province.findAll();
-  res.jsonOK(info);
-};
-
-const idProvince = async (req, res) => {
-  const { id } = req.params;
-  const province = await Province.findByPk(id);
-  return province
-    ? res.jsonOK(province)
-    : res.jsonNotFound(`No Province with id '${id}'`);
-};
-
 module.exports = {
   allAreas,
+  allInstitutions,
   allProvinces,
-  idProvinceTowns,
   idProvince,
+  idProvinceTowns,
 };
