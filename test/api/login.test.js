@@ -1,7 +1,5 @@
-require('dotenv').config({ path: './.env.test' });
-const request = require('supertest');
 const { OK, BAD_REQUEST } = require('http-status-codes');
-const app = require('../../src/server');
+const { api } = require('../test-case');
 const { User } = require('../../db/models');
 
 describe('Auth', () => {
@@ -21,23 +19,19 @@ describe('Auth', () => {
       pass: '1234',
     };
     await User.create(user);
-    const res = await request(app)
-      .post('/login')
-      .send({
-        email: user.email,
-        pass: user.pass,
-      });
+    const res = await api.post('/login', {
+      email: user.email,
+      pass: user.pass,
+    });
     expect(res.status).toBe(OK);
     expect(res.body).toHaveProperty('token');
   });
 
   it('should response 400 when login has invalid email', async () => {
-    const res = await request(app)
-      .post('/login')
-      .send({
-        email: 'jon.snow@winterfell.com',
-        pass: '1234',
-      });
+    const res = await api.post('/login', {
+      email: 'jon.snow@winterfell.com',
+      pass: '1234',
+    });
     expect(res.status).toBe(BAD_REQUEST);
     expect(res.body).toEqual(
       {
@@ -48,18 +42,14 @@ describe('Auth', () => {
   });
 
   it('should response 400 when login has invalid pass', async () => {
-    const res = await request(app)
-      .post('/login')
-      .send({
-        email: 'jon.snow@winterfell.com',
-        pass: '1234',
-      });
+    const res = await api.post('/login', {
+      email: 'jon.snow@winterfell.com',
+      pass: '1234',
+    });
     expect(res.status).toBe(BAD_REQUEST);
-    expect(res.body).toEqual(
-      {
-        token: false,
-        errors: ['Invalid email or password'],
-      },
-    );
+    expect(res.body).toEqual({
+      token: false,
+      errors: ['Invalid email or password'],
+    });
   });
 });
