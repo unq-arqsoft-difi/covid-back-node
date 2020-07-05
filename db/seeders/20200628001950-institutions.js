@@ -10,7 +10,10 @@ function stripBOM(content) {
 }
 
 async function townId(institution) {
-  const town = await Town.findOne({ where: { name: institution.localidad_nombre } });
+  const town = await Town.findOne({
+    where: { name: institution.localidad_nombre },
+    attributes: ['id', 'name'],
+  });
   return town ? town.id : null;
 }
 
