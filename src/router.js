@@ -17,6 +17,7 @@ const handling = callback => async (req, res, next) => {
 // router.METHOD('path', [middleware,] callback)
 router.post('/login', login.loginFormValidations, handling(login.login));
 router.post('/users', users.formValidations,      handling(users.registry));
+router.get('/support/areas',                      handling(support.allAreas));
 router.get('/support/provinces',                  handling(support.allProvinces));
 router.get('/support/provinces/:id',              handling(support.idProvince));
 router.get('/support/provinces/:id/towns',        handling(support.idProvinceTowns));
