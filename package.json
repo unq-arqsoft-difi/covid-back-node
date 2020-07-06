@@ -38,22 +38,22 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "rm": "^0.1.8",
-    "sequelize": "^6.2.2",
-    "sequelize-cli": "^6.1.0",
+    "sequelize": "^6.3.0",
+    "sequelize-cli": "^6.2.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "coveralls": "^3.1.0",
-    "eslint": "7.3.1",
+    "eslint": "7.4.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^23.17.1",
+    "eslint-plugin-jest": "^23.18.0",
     "husky": "^4.2.5",
     "jest": "^26.1.0",
     "jest-extended": "^0.11.5",
     "nodemon": "^2.0.4",
-    "sqlite3": "^4.2.0",
+    "sqlite3": "^5.0.0",
     "supertest": "^4.0.2"
   },
   "jest": {
