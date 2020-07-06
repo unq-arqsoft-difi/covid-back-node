@@ -1,8 +1,11 @@
 /* eslint-disable no-multi-spaces */
+require('dotenv').config();
+
 const express = require('express');
-const login   = require('./api/login');
+const token = require('./lib/token');
+const login = require('./api/login');
 const support = require('./api/support');
-const users   = require('./api/users');
+const users = require('./api/users');
 
 const router = express.Router();
 
@@ -17,6 +20,7 @@ const handling = callback => async (req, res, next) => {
 // router.METHOD('path', [middleware,] callback)
 router.post('/login', login.loginFormValidations, handling(login.login));
 router.post('/users', users.formValidations,      handling(users.registry));
+// router.post('/request-supplies', users.formValidations,      handling(users.registry));
 router.get('/support/areas',                      handling(support.allAreas));
 router.get('/support/institutions',               handling(support.allInstitutions));
 router.get('/support/provinces',                  handling(support.allProvinces));
@@ -26,5 +30,6 @@ router.get('/support/supplies',                   handling(support.allSupplies))
 
 // for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));
+router.get('/test/token', token.verify, (req, res) => res.json({ info: req.jwt }));
 
 module.exports = router;
