@@ -1,6 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const { UNAUTHORIZED } = require('http-status-codes');
+const ApiError = require('./api-error');
 
 const secret = process.env.ACCESS_TOKEN_SECRET;
 
@@ -12,8 +13,7 @@ const verify = (req, res, next) => {
     req.jwt = jwt.verify(token, secret);
     next();
   } catch (error) {
-    const err = { status: UNAUTHORIZED, message: 'Invalid Token' };
-    throw err;
+    throw new ApiError('Invalid Token', UNAUTHORIZED);
   }
 };
 

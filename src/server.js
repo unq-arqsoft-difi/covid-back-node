@@ -38,10 +38,11 @@ app.use((error, req, res, next) => {
   const status = error.status || INTERNAL_SERVER_ERROR;
   const message = error.message || 'Ups, something is wrong...';
   if (status >= 500) logger.error(error);
+
+  const response = { status, message };
+  if (error.errors) response.errors = error.errors;
   res.status(status);
-  res.json({
-    error: { status, message },
-  });
+  res.json(response);
 });
 
 module.exports = app;
