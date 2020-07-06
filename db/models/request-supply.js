@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   RequestSupply.init({
+    amount: DataTypes.INTEGER,
     status: DataTypes.STRING,
   }, {
     sequelize,

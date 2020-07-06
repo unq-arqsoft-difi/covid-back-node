@@ -7,21 +7,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user: {
+      userId: {
         type: Sequelize.INTEGER,
         references: { model: 'Users', key: 'id' },
         allowNull: false,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      supply: {
+      supplyId: {
         type: Sequelize.INTEGER,
         references: { model: 'Supplies', key: 'id' },
         allowNull: false,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      area: {
+      amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      areaId: {
         type: Sequelize.INTEGER,
         references: { model: 'Areas', key: 'id' },
         allowNull: true,
@@ -30,6 +34,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
