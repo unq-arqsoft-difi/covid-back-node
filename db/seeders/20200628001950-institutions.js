@@ -23,15 +23,21 @@ const fetchInstitutions = () => axios.get(url)
   .then(async (res) => {
     const data = stripBOM(res.data); // algún forro retorna UTF-8 with BOM
     const institutions = JSON.parse(data);
-    const mapped = await Promise.all(institutions.map(async institution => ({
-      id: institution.establecimiento_id,
-      name: institution.establecimiento_nombre,
-      funding: institution.origen_financiamiento,
-      townId: await townId(institution), // algún otro forro no normalizó los IDs
-      provinceId: institution.provincia_id.padStart(2, '0'),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })));
+    const mapped = await Promise.all(institutions.filter((item) => {
+      const isClinic = item.establecimiento_nombre.includes('CLINICA');
+      const isHospital = item.establecimiento_nombre.includes('HOSPITAL');
+      const isSanatorium = item.establecimiento_nombre.includes('SANATORIO');
+      return isClinic || isHospital || isSanatorium;
+    })
+      .map(async institution => ({
+        id: institution.establecimiento_id,
+        name: institution.establecimiento_nombre,
+        funding: institution.origen_financiamiento,
+        townId: await townId(institution), // algún otro forro no normalizó los IDs
+        provinceId: institution.provincia_id.padStart(2, '0'),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })));
     return mapped.sort((a, b) => a.id.localeCompare(b.id));
   }).catch((error) => {
     logger.error(error);
