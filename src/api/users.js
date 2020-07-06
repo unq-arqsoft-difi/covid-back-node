@@ -2,15 +2,14 @@ const { check, validationResult } = require('express-validator');
 const { CREATED, BAD_REQUEST } = require('http-status-codes');
 const { sequelize, User } = require('../../db/models');
 
-const emailAlreadyExists = async (email) => {
-  const foundedUser = await User.findOne({ where: { email } });
-  return foundedUser !== null;
-};
+// ----- Private -----
 
-const saveUser = (newUser) => {
-  sequelize.transaction(t => User.create(newUser, { transaction: t }).then(user => user)).then(result => result)
-    .catch(err => err);
-};
+const saveUser = newUser => sequelize
+  .transaction(transaction => User.create(newUser, { transaction }).then(user => user))
+  .then(result => result)
+  .catch(err => err);
+
+// ----- Public -----
 
 const formValidations = [
   check('firstName', 'First Name is required').not().isEmpty(),
@@ -25,28 +24,34 @@ const formValidations = [
 
 const registry = async (req, res) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(BAD_REQUEST).json({
       created: false,
       errors: errors.array().map(e => e.msg),
     });
   }
-  if (await emailAlreadyExists(req.body.email)) {
-    res.status(BAD_REQUEST).json({
+
+  const user = await User.findOne({ where: { email: req.body.email } });
+  if (user) {
+    return res.status(BAD_REQUEST).json({
       created: false,
       errors: ['E-Mail address already exists'],
     });
-  } else {
-    const {
-      firstName, lastName, email, phone, entity, job, place, pass,
-    } = req.body;
-    const newUser = {
-      firstName, lastName, email, phone, entity, job, place, pass,
-    };
-    await saveUser(newUser);
-    res.status(CREATED).json({ created: true });
   }
-  return res;
+
+  await saveUser({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    phone: req.body.phone,
+    entity: req.body.entity,
+    job: req.body.job,
+    place: req.body.place,
+    pass: req.body.pass,
+  });
+
+  return res.status(CREATED).json({ created: true });
 };
 
 module.exports = { formValidations, registry };
