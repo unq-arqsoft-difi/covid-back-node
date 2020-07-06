@@ -2,6 +2,7 @@ const {
   Area,
   Institution,
   Province,
+  Supply,
   Town,
 } = require('../../db/models');
 
@@ -14,6 +15,7 @@ const allFrom = model => async (req, res) => res.jsonOK(await model.findAll());
 const allAreas = allFrom(Area);
 const allInstitutions = allFrom(Institution);
 const allProvinces = allFrom(Province);
+const allSupplies = allFrom(Supply);
 
 const idProvince = async (req, res) => {
   const { id } = req.params;
@@ -45,6 +47,7 @@ module.exports = {
   allAreas,
   allInstitutions,
   allProvinces,
+  allSupplies,
   idProvince,
   idProvinceTowns,
 };

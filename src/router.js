@@ -22,6 +22,7 @@ router.get('/support/institutions',               handling(support.allInstitutio
 router.get('/support/provinces',                  handling(support.allProvinces));
 router.get('/support/provinces/:id',              handling(support.idProvince));
 router.get('/support/provinces/:id/towns',        handling(support.idProvinceTowns));
+router.get('/support/supplies',                   handling(support.allSupplies));
 
 // for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));
