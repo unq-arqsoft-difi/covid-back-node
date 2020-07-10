@@ -7,7 +7,7 @@ describe('Registry', () => {
     await User.sync({ force: true });
   });
 
-  it('should responde 201 when create a valid user', async () => {
+  test('should responde 201 when create a valid user', async () => {
     const res = await api.post('/users', {
       firstName: 'Jon',
       lastName: 'Snow',
@@ -23,7 +23,7 @@ describe('Registry', () => {
     expect(res.body.created).toBe(true);
   });
 
-  it('should responde 400 when try create user without some fields', async () => {
+  test('should responde 400 when try create user without some fields', async () => {
     const res = await api.post('/users', {
       firstName: '',
       lastName: '',
@@ -50,7 +50,7 @@ describe('Registry', () => {
     });
   });
 
-  it('should responde 400 when try to register an email two times', async () => {
+  test('should responde 400 when try to register an email two times', async () => {
     const user = {
       firstName: 'Jon',
       lastName: 'Snow',

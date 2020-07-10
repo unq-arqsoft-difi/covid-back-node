@@ -7,7 +7,7 @@ describe('Auth', () => {
     await User.sync({ force: true });
   });
 
-  it('should response 200 when login is successfully', async () => {
+  test('should response 200 when login is successfully', async () => {
     const user = {
       firstName: 'Jon',
       lastName: 'Snow',
@@ -27,7 +27,7 @@ describe('Auth', () => {
     expect(res.body).toHaveProperty('token');
   });
 
-  it('should response 400 when login has invalid email', async () => {
+  test('should response 400 when login has invalid email', async () => {
     const res = await api.post('/login', {
       email: 'jon.snow@winterfell.com',
       pass: '1234',
@@ -41,7 +41,7 @@ describe('Auth', () => {
     );
   });
 
-  it('should response 400 when login has invalid pass', async () => {
+  test('should response 400 when login has invalid pass', async () => {
     const res = await api.post('/login', {
       email: 'jon.snow@winterfell.com',
       pass: '1234',

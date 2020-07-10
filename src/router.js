@@ -33,6 +33,16 @@ router.get(
   token.verify,
   handling(supplies.getRequestSupplies),
 );
+router.get(
+  '/request-supplies/:id',
+  token.verify,
+  handling(supplies.getRequestSupply),
+);
+router.delete(
+  '/request-supplies/:id',
+  token.verify,
+  handling(supplies.cancelRequestSupply),
+);
 
 router.get('/support/areas',               handling(support.allAreas));
 router.get('/support/institutions',        handling(support.allInstitutions));

@@ -30,6 +30,9 @@ const requestValidations = [
   check('supplyId', 'Invalid Supply ID').custom(existsIn(Supply)),
 ];
 
+/**
+ * GET /request-supplies
+ */
 const getRequestSupplies = async (req, res) => {
   const { status } = req.query;
   const user = await User.findOne({ where: { email: req.jwt.email } });
@@ -41,6 +44,44 @@ const getRequestSupplies = async (req, res) => {
   return res.jsonOK(requestSupplies);
 };
 
+/**
+ * GET /request-supplies/:id
+ */
+const getRequestSupply = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.query;
+  const user = await User.findOne({ where: { email: req.jwt.email } });
+
+  const where = { id, userId: user.id };
+  if (status) where.status = status;
+  const requestSupply = await RequestSupply.findOne({ where });
+  if (!requestSupply) throw new ApiError('Request Supply not exists', BAD_REQUEST);
+
+  return res.jsonOK(requestSupply);
+};
+
+/**
+ * DELETE /request-supplies/:id
+ */
+const cancelRequestSupply = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.query;
+  const user = await User.findOne({ where: { email: req.jwt.email } });
+
+  const where = { id, userId: user.id };
+  if (status) where.status = status;
+  const requestSupply = await RequestSupply.findOne({ where });
+  if (!requestSupply) throw new ApiError('Request Supply not exists', BAD_REQUEST);
+
+  requestSupply.status = 'Canceled';
+  await requestSupply.save();
+
+  return res.jsonOK(requestSupply);
+};
+
+/**
+ * POST /request-supplies
+ */
 const createRequestSupply = async (req, res) => {
   checkValidationsMiddleware(req);
 
@@ -62,7 +103,9 @@ const createRequestSupply = async (req, res) => {
 };
 
 module.exports = {
-  requestValidations,
-  getRequestSupplies,
+  cancelRequestSupply,
   createRequestSupply,
+  getRequestSupplies,
+  getRequestSupply,
+  requestValidations,
 };
