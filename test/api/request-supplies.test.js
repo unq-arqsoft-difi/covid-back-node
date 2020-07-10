@@ -61,6 +61,45 @@ describe('Request Supplies', () => {
         expect(reqSupply).toContainEntry(['amount', 10]);
         expect(reqSupply).toContainEntry(['status', 'Pending']);
       });
+
+      test('Only pending', async () => {
+        const user = await User.findOne({ where: { email: 'jon@snow.com' } });
+        await RequestSupply.create({
+          userId: user.id,
+          supply: { name: 'Gloves', stock: 1000 },
+          area: { name: 'The Citadel' },
+          amount: 30,
+          status: 'Approved',
+        }, {
+          include: [
+            { model: Supply, as: 'supply' },
+            { model: Area, as: 'area' },
+          ],
+        });
+        await RequestSupply.create({
+          userId: user.id,
+          supplyId: 1,
+          areaId: 1,
+          amount: 20,
+          status: 'Pending',
+        });
+
+        let res = await api.get('/request-supplies', token);
+        expect(res.status).toBe(OK);
+        expect(res.body).toBeArrayOfSize(2);
+
+        res = await api.get('/request-supplies?status=Pending', token);
+        expect(res.status).toBe(OK);
+        expect(res.body).toBeArrayOfSize(1);
+
+        const [reqSupply] = res.body;
+        expect(reqSupply).toContainEntry(['id', 2]);
+        expect(reqSupply).toContainEntry(['userId', user.id]);
+        expect(reqSupply).toContainEntry(['supplyId', 1]);
+        expect(reqSupply).toContainEntry(['areaId', 1]);
+        expect(reqSupply).toContainEntry(['amount', 20]);
+        expect(reqSupply).toContainEntry(['status', 'Pending']);
+      });
     });
   });
 
