@@ -1,5 +1,5 @@
 const { OK, NOT_FOUND } = require('http-status-codes');
-const { api } = require('../test-case');
+const { api, clearDatabase } = require('../test-case');
 const {
   Area,
   Institution,
@@ -9,53 +9,48 @@ const {
 } = require('../../db/models');
 
 describe('/support', () => {
-  describe('/areas', () => {
-    beforeEach(async () => Area.sync({ force: true }));
+  beforeEach(async () => clearDatabase());
 
+  describe('/areas', () => {
     test('Empty list', async () => {
-      const { body, status } = await api.get('/support/areas');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(0);
+      const res = await api.get('/support/areas');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(0);
     });
 
     test('With an Area', async () => {
       await Area.create({ id: 1, name: 'The Fingers' });
-      const { body, status } = await api.get('/support/areas');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(1);
+      const res = await api.get('/support/areas');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(1);
 
-      const [area] = body;
+      const [area] = res.body;
       expect(area).toEqual({ id: 1, name: 'The Fingers' });
     });
   });
 
   describe('/provinces', () => {
-    beforeEach(async () => {
-      await Town.sync({ force: true });
-      await Province.sync({ force: true });
-    });
-
     test('Empty list', async () => {
-      const { body, status } = await api.get('/support/provinces');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(0);
+      const res = await api.get('/support/provinces');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(0);
     });
 
     test('With a Province', async () => {
       await Province.create({ id: '01', name: 'The North' });
-      const { body, status } = await api.get('/support/provinces');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(1);
+      const res = await api.get('/support/provinces');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(1);
 
-      const [province] = body;
+      const [province] = res.body;
       expect(province).toEqual({ id: '01', name: 'The North' });
     });
 
     describe('/:id', () => {
       test('Not Found', async () => {
-        const { body, status } = await api.get('/support/provinces/01');
-        expect(status).toBe(NOT_FOUND);
-        expect(body).toMatchObject({
+        const res = await api.get('/support/provinces/01');
+        expect(res.status).toBe(NOT_FOUND);
+        expect(res.body).toMatchObject({
           status: 404,
           message: "No Province with id '01'",
         });
@@ -63,35 +58,32 @@ describe('/support', () => {
 
       test('Found', async () => {
         await Province.create({ id: '01', name: 'The North' });
-        const { body, status } = await api.get('/support/provinces/01');
-        expect(status).toBe(OK);
-        expect(body).toMatchObject({ id: '01', name: 'The North' });
+        const res = await api.get('/support/provinces/01');
+        expect(res.status).toBe(OK);
+        expect(res.body).toMatchObject({ id: '01', name: 'The North' });
       });
     });
 
     describe('/:id/towns', () => {
       test('Empty towns', async () => {
         await Province.create({ id: '01', name: 'The North' });
-        const { body, status } = await api.get('/support/provinces/01/towns');
-        expect(status).toBe(OK);
-        expect(body.towns).toBeArrayOfSize(0);
+        const res = await api.get('/support/provinces/01/towns');
+        expect(res.status).toBe(OK);
+        expect(res.body.towns).toBeArrayOfSize(0);
       });
 
       test('Add a Town', async () => {
         await Province.create({
           id: '01',
           name: 'The North',
-          towns: [{
-            id: 'ABC',
-            name: 'Winterfell',
-          }],
+          towns: [{ id: 'ABC', name: 'Winterfell' }],
         }, { include: [{ model: Town, as: 'towns' }] });
 
-        const { body, status } = await api.get('/support/provinces/01/towns');
-        expect(status).toBe(OK);
-        expect(body.towns).toBeArrayOfSize(1);
+        const res = await api.get('/support/provinces/01/towns');
+        expect(res.status).toBe(OK);
+        expect(res.body.towns).toBeArrayOfSize(1);
 
-        const [town] = body.towns;
+        const [town] = res.body.towns;
         expect(town).toEqual({ id: 'ABC', name: 'Winterfell' });
       });
     });
@@ -105,9 +97,9 @@ describe('/support', () => {
     });
 
     test('Empty list', async () => {
-      const { body, status } = await api.get('/support/institutions');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(0);
+      const res = await api.get('/support/institutions');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(0);
     });
 
     test('With an Institution', async () => {
@@ -115,14 +107,8 @@ describe('/support', () => {
         id: '01',
         name: 'Citadel',
         funding: 'Municipal',
-        town: {
-          id: '11',
-          name: 'OldTown',
-        },
-        province: {
-          id: '21',
-          name: 'Westeros',
-        },
+        town: { id: '11', name: 'OldTown' },
+        province: { id: '21', name: 'Westeros' },
       }, {
         include: [
           { model: Town, as: 'town' },
@@ -130,11 +116,11 @@ describe('/support', () => {
         ],
       });
 
-      const { body, status } = await api.get('/support/institutions');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(1);
+      const res = await api.get('/support/institutions');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(1);
 
-      const [area] = body;
+      const [area] = res.body;
       expect(area).toEqual({
         id: '01',
         name: 'Citadel',
@@ -146,12 +132,10 @@ describe('/support', () => {
   });
 
   describe('/supplies', () => {
-    beforeEach(async () => Supply.sync({ force: true }));
-
     test('Empty list', async () => {
-      const { body, status } = await api.get('/support/supplies');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(0);
+      const res = await api.get('/support/supplies');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(0);
     });
 
     test('With a Supply', async () => {
@@ -160,11 +144,11 @@ describe('/support', () => {
         name: 'Gloves',
         stock: 10000,
       });
-      const { body, status } = await api.get('/support/supplies');
-      expect(status).toBe(OK);
-      expect(body).toBeArrayOfSize(1);
+      const res = await api.get('/support/supplies');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(1);
 
-      const [supply] = body;
+      const [supply] = res.body;
       expect(supply).toEqual({
         id: 1,
         name: 'Gloves',

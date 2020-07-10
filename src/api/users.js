@@ -3,7 +3,6 @@ const { CREATED } = require('http-status-codes');
 const {
   Institution,
   Province,
-  sequelize,
   Town,
   User,
 } = require('../../db/models');

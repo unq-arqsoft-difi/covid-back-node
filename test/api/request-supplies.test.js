@@ -1,5 +1,5 @@
 const { OK, CREATED, BAD_REQUEST } = require('http-status-codes');
-const { api } = require('../test-case');
+const { api, clearDatabase } = require('../test-case');
 const builder = require('../builder');
 const {
   Area,
@@ -11,15 +11,10 @@ const {
 describe('Request Supplies', () => {
   let token;
   let loggedUser;
-  beforeAll(async () => {
-    await User.sync({ force: true });
+  beforeEach(async () => {
+    await clearDatabase();
     token = await builder.generateToken({ email: 'jon@snow.com' });
     loggedUser = await User.findOne({ where: { email: 'jon@snow.com' } });
-  });
-  beforeEach(async () => {
-    await Area.sync({ force: true });
-    await Supply.sync({ force: true });
-    await RequestSupply.sync({ force: true });
   });
 
   describe('GET /request-supplies', () => {
