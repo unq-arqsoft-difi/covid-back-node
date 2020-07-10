@@ -1,6 +1,7 @@
 require('dotenv').config({ path: './.env.test' });
-require('jest-extended');
+
 const request = require('supertest');
+require('./jest-extensions');
 const app = require('../src/server');
 
 const api = {

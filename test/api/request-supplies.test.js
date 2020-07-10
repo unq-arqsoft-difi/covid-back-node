@@ -1,4 +1,4 @@
-const { CREATED, BAD_REQUEST, UNAUTHORIZED } = require('http-status-codes');
+const { CREATED, BAD_REQUEST } = require('http-status-codes');
 const { api, helpers } = require('../test-case');
 const {
   Area,
@@ -12,13 +12,18 @@ describe('Request Supplies', () => {
     await RequestSupply.sync({ force: true });
   });
 
+  describe('GET /request-supplies', () => {
+    it('Without Token response error', async () => {
+      const res = await api.get('/request-supplies');
+      expect(res).not.toBeValidToken();
+    });
+  });
+
   describe('POST /request-supplies', () => {
     it('Without Token response error', async () => {
       const data = {};
       const res = await api.post('/request-supplies', data);
-      expect(res.status).toBe(UNAUTHORIZED);
-      expect(res.body).toContainEntry(['status', UNAUTHORIZED]);
-      expect(res.body).toContainEntry(['message', 'Invalid Token']);
+      expect(res).not.toBeValidToken();
     });
 
     describe('With Token', () => {
