@@ -13,7 +13,7 @@ describe('Request Supplies', () => {
   });
 
   describe('GET /request-supplies', () => {
-    it('Without Token response error', async () => {
+    test('Without Token response error', async () => {
       const res = await api.get('/request-supplies');
       expect(res).not.toBeValidToken();
     });
@@ -104,7 +104,7 @@ describe('Request Supplies', () => {
   });
 
   describe('POST /request-supplies', () => {
-    it('Without Token response error', async () => {
+    test('Without Token response error', async () => {
       const data = {};
       const res = await api.post('/request-supplies', data);
       expect(res).not.toBeValidToken();
@@ -121,7 +121,7 @@ describe('Request Supplies', () => {
         await Supply.sync({ force: true });
       });
 
-      it('Data Validation (empty data)', async () => {
+      test('Data Validation (empty data)', async () => {
         const data = {};
         const res = await api.post('/request-supplies', data, token);
         expect(res.status).toBe(BAD_REQUEST);
@@ -130,7 +130,7 @@ describe('Request Supplies', () => {
         expect(res.body.errors).toIncludeAllMembers(['Invalid Area ID', 'Invalid Supply ID']);
       });
 
-      it('Data Validation (invalid data)', async () => {
+      test('Data Validation (invalid data)', async () => {
         const area = await Area.create({ name: 'Therapy' });
         const supply = await Supply.create({ name: 'Gloves' });
         const data = {
@@ -144,7 +144,7 @@ describe('Request Supplies', () => {
         expect(res.body.errors).toIncludeAllMembers(['Invalid Area ID', 'Invalid Supply ID']);
       });
 
-      it('Success Request Supplies', async () => {
+      test('Success Request Supplies', async () => {
         const area = await Area.create({ name: 'Therapy' });
         const supply = await Supply.create({ name: 'Gloves' });
         const data = {
