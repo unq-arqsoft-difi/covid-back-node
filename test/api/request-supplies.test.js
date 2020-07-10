@@ -8,7 +8,16 @@ const {
 } = require('../../db/models');
 
 describe('Request Supplies', () => {
+  let token;
+  let loggedUser;
+  beforeAll(async () => {
+    await User.sync({ force: true });
+    token = await helpers.generateToken({ email: 'jon@snow.com' });
+    loggedUser = await User.findOne({ where: { email: 'jon@snow.com' } });
+  });
   beforeEach(async () => {
+    await Area.sync({ force: true });
+    await Supply.sync({ force: true });
     await RequestSupply.sync({ force: true });
   });
 
@@ -19,16 +28,6 @@ describe('Request Supplies', () => {
     });
 
     describe('With Token', () => {
-      let token;
-      beforeAll(async () => {
-        await User.sync({ force: true });
-        token = await helpers.generateToken({ email: 'jon@snow.com' });
-      });
-      beforeEach(async () => {
-        await Area.sync({ force: true });
-        await Supply.sync({ force: true });
-      });
-
       test('Empty list', async () => {
         const res = await api.get('/request-supplies', token);
         expect(res.status).toBe(OK);
@@ -36,9 +35,8 @@ describe('Request Supplies', () => {
       });
 
       test('With data', async () => {
-        const user = await User.findOne({ where: { email: 'jon@snow.com' } });
         await RequestSupply.create({
-          userId: user.id,
+          userId: loggedUser.id,
           supply: { name: 'Gloves', stock: 1000 },
           area: { name: 'The Citadel' },
           amount: 10,
@@ -55,7 +53,7 @@ describe('Request Supplies', () => {
         expect(res.body).toBeArrayOfSize(1);
         const [reqSupply] = res.body;
         expect(reqSupply).toContainEntry(['id', 1]);
-        expect(reqSupply).toContainEntry(['userId', user.id]);
+        expect(reqSupply).toContainEntry(['userId', loggedUser.id]);
         expect(reqSupply).toContainEntry(['supplyId', 1]);
         expect(reqSupply).toContainEntry(['areaId', 1]);
         expect(reqSupply).toContainEntry(['amount', 10]);
@@ -63,9 +61,8 @@ describe('Request Supplies', () => {
       });
 
       test('Only pending', async () => {
-        const user = await User.findOne({ where: { email: 'jon@snow.com' } });
         await RequestSupply.create({
-          userId: user.id,
+          userId: loggedUser.id,
           supply: { name: 'Gloves', stock: 1000 },
           area: { name: 'The Citadel' },
           amount: 30,
@@ -77,7 +74,7 @@ describe('Request Supplies', () => {
           ],
         });
         await RequestSupply.create({
-          userId: user.id,
+          userId: loggedUser.id,
           supplyId: 1,
           areaId: 1,
           amount: 20,
@@ -94,7 +91,7 @@ describe('Request Supplies', () => {
 
         const [reqSupply] = res.body;
         expect(reqSupply).toContainEntry(['id', 2]);
-        expect(reqSupply).toContainEntry(['userId', user.id]);
+        expect(reqSupply).toContainEntry(['userId', loggedUser.id]);
         expect(reqSupply).toContainEntry(['supplyId', 1]);
         expect(reqSupply).toContainEntry(['areaId', 1]);
         expect(reqSupply).toContainEntry(['amount', 20]);
@@ -110,21 +107,9 @@ describe('Request Supplies', () => {
     });
 
     describe('With Token', () => {
-      let token;
-      beforeAll(async () => {
-        await User.sync({ force: true });
-        token = await helpers.generateToken({ email: 'jon@snow.com' });
-      });
-      beforeEach(async () => {
-        await Area.sync({ force: true });
-        await Supply.sync({ force: true });
-        await RequestSupply.sync({ force: true });
-      });
-
       test('With data', async () => {
-        const user = await User.findOne({ where: { email: 'jon@snow.com' } });
         const rs = await RequestSupply.create({
-          userId: user.id,
+          userId: loggedUser.id,
           supply: { name: 'Gloves', stock: 1000 },
           area: { name: 'The Citadel' },
           amount: 10,
@@ -140,7 +125,7 @@ describe('Request Supplies', () => {
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
         expect(res.body).toContainEntry(['id', 1]);
-        expect(res.body).toContainEntry(['userId', user.id]);
+        expect(res.body).toContainEntry(['userId', loggedUser.id]);
         expect(res.body).toContainEntry(['supplyId', 1]);
         expect(res.body).toContainEntry(['areaId', 1]);
         expect(res.body).toContainEntry(['amount', 10]);
@@ -178,16 +163,6 @@ describe('Request Supplies', () => {
     });
 
     describe('With Token', () => {
-      let token;
-      beforeAll(async () => {
-        await User.sync({ force: true });
-        token = await helpers.generateToken();
-      });
-      beforeEach(async () => {
-        await Area.sync({ force: true });
-        await Supply.sync({ force: true });
-      });
-
       test('Data Validation (empty data)', async () => {
         const data = {};
         const res = await api.post('/request-supplies', data, token);
