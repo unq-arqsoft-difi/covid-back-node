@@ -5,13 +5,20 @@ require('./jest-extensions');
 const app = require('../src/server');
 
 const api = {
-  get: path => request(app).get(path).expect('Content-Type', /json/),
+  get: (path, token = null) => {
+    const req = request(app).get(path);
+    if (token) req.set('Authorization', `Bearer ${token}`);
+    return req.expect('Content-Type', /json/);
+  },
+
   put: (path, data = {}) => request(app).put(path).send(data).expect('Content-Type', /json/),
+
   post: (path, data = {}, token = null) => {
     const req = request(app).post(path).send(data);
     if (token) req.set('Authorization', `Bearer ${token}`);
     return req.expect('Content-Type', /json/);
   },
+
   delete: path => request(app).delete(path),
 };
 
@@ -33,9 +40,12 @@ const login = async data => api.post('/login', {
   ...data,
 });
 
-const generateToken = async () => {
-  await register();
-  return login().then(res => res.body.token);
+const generateToken = async (data = {}) => {
+  await register(data);
+  const loginData = {};
+  if (data.email) loginData.email = data.email;
+  if (data.pass) loginData.pass = data.pass;
+  return login(loginData).then(res => res.body.token);
 };
 
 module.exports = {
