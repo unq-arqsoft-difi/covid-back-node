@@ -61,6 +61,25 @@ const getRequestSupply = async (req, res) => {
 };
 
 /**
+ * DELETE /request-supplies/:id
+ */
+const cancelRequestSupply = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.query;
+  const user = await User.findOne({ where: { email: req.jwt.email } });
+
+  const where = { id, userId: user.id };
+  if (status) where.status = status;
+  const requestSupply = await RequestSupply.findOne({ where });
+  if (!requestSupply) throw new ApiError('Request Supply not exists', BAD_REQUEST);
+
+  requestSupply.status = 'Canceled';
+  await requestSupply.save();
+
+  return res.jsonOK(requestSupply);
+};
+
+/**
  * POST /request-supplies
  */
 const createRequestSupply = async (req, res) => {
@@ -84,6 +103,7 @@ const createRequestSupply = async (req, res) => {
 };
 
 module.exports = {
+  cancelRequestSupply,
   createRequestSupply,
   getRequestSupplies,
   getRequestSupply,
