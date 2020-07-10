@@ -1,5 +1,6 @@
 const { OK, CREATED, BAD_REQUEST } = require('http-status-codes');
-const { api, helpers } = require('../test-case');
+const { api } = require('../test-case');
+const builder = require('../builder');
 const {
   Area,
   RequestSupply,
@@ -12,7 +13,7 @@ describe('Request Supplies', () => {
   let loggedUser;
   beforeAll(async () => {
     await User.sync({ force: true });
-    token = await helpers.generateToken({ email: 'jon@snow.com' });
+    token = await builder.generateToken({ email: 'jon@snow.com' });
     loggedUser = await User.findOne({ where: { email: 'jon@snow.com' } });
   });
   beforeEach(async () => {
@@ -133,7 +134,7 @@ describe('Request Supplies', () => {
       });
 
       test('Error when invalid id', async () => {
-        const anotherUser = await helpers.register({ email: 'juan@nieve.com' });
+        const anotherUser = await builder.register({ email: 'juan@nieve.com' });
         const rs = await RequestSupply.create({
           userId: anotherUser.id,
           supply: { name: 'Gloves', stock: 1000 },
