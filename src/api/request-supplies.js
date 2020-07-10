@@ -1,6 +1,6 @@
 const { check, validationResult } = require('express-validator');
-const { CREATED, BAD_REQUEST } = require('http-status-codes');
-const ApiError = require('../lib/api-error');
+const { CREATED } = require('http-status-codes');
+const { BadRequestResponse } = require('../lib/api-error');
 const {
   Area,
   RequestSupply,
@@ -13,7 +13,7 @@ const {
 const checkValidationsMiddleware = (req) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new ApiError('Validation Errors', BAD_REQUEST, errors.array().map(e => e.msg));
+    throw new BadRequestResponse('Validation Errors', errors.array().map(e => e.msg));
   }
 };
 
@@ -55,7 +55,7 @@ const getRequestSupply = async (req, res) => {
   const where = { id, userId: user.id };
   if (status) where.status = status;
   const requestSupply = await RequestSupply.findOne({ where });
-  if (!requestSupply) throw new ApiError('Request Supply not exists', BAD_REQUEST);
+  if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
 
   return res.jsonOK(requestSupply);
 };
@@ -71,7 +71,7 @@ const cancelRequestSupply = async (req, res) => {
   const where = { id, userId: user.id };
   if (status) where.status = status;
   const requestSupply = await RequestSupply.findOne({ where });
-  if (!requestSupply) throw new ApiError('Request Supply not exists', BAD_REQUEST);
+  if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
 
   requestSupply.status = 'Canceled';
   await requestSupply.save();
@@ -98,7 +98,7 @@ const createRequestSupply = async (req, res) => {
     });
     return res.status(CREATED).json({ created: true, request });
   } catch (error) {
-    throw new ApiError('Error creating request Supply', BAD_REQUEST, [error.toString()]);
+    throw new BadRequestResponse('Error creating request Supply', [error.toString()]);
   }
 };
 
