@@ -4,7 +4,7 @@ require('dotenv').config();
 const express  = require('express');
 const ApiError = require('./lib/api-error');
 const login    = require('./api/login');
-const supplies = require('./api/supplies');
+const supplies = require('./api/request-supplies');
 const support  = require('./api/support');
 const token    = require('./lib/token');
 const users    = require('./api/users');
@@ -26,7 +26,12 @@ router.post('/users', users.formValidations,      handling(users.registry));
 router.post(
   '/request-supplies',
   [token.verify, supplies.requestValidations],
-  handling(supplies.requestSupply),
+  handling(supplies.createRequestSupply),
+);
+router.get(
+  '/request-supplies',
+  token.verify,
+  handling(supplies.getRequestSupplies),
 );
 
 router.get('/support/areas',               handling(support.allAreas));

@@ -30,7 +30,18 @@ const requestValidations = [
   check('supplyId', 'Invalid Supply ID').custom(existsIn(Supply)),
 ];
 
-const requestSupply = async (req, res) => {
+const getRequestSupplies = async (req, res) => {
+  const { status } = req.query;
+  const user = await User.findOne({ where: { email: req.jwt.email } });
+
+  const where = { userId: user.id };
+  if (status) where.status = status;
+  const requestSupplies = await RequestSupply.findAll({ where });
+
+  return res.jsonOK(requestSupplies);
+};
+
+const createRequestSupply = async (req, res) => {
   checkValidationsMiddleware(req);
 
   const user = await User.findOne({ where: { email: req.jwt.email } });
@@ -50,4 +61,8 @@ const requestSupply = async (req, res) => {
   }
 };
 
-module.exports = { requestValidations, requestSupply };
+module.exports = {
+  requestValidations,
+  getRequestSupplies,
+  createRequestSupply,
+};
