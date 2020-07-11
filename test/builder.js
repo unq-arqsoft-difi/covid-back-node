@@ -68,11 +68,14 @@ const generateToken = async (data = {}) => {
   return login(loginData).then(res => res.body.token);
 };
 
+const generateTokenAdmin = async (data = {}) => generateToken({ ...data, admin: true });
+
 module.exports = {
-  generateToken,
-  login,
-  register,
   createInstitution,
   createProvince,
   createTown,
+  generateToken,
+  generateTokenAdmin,
+  login,
+  register,
 };
