@@ -7,6 +7,7 @@ const supplies = require('./api/request-supplies');
 const support  = require('./api/support');
 const token    = require('./lib/token');
 const users    = require('./api/users');
+const admin    = require('./api/admin');
 const { ForbiddenResponse } = require('./lib/api-error');
 
 const router = express.Router();
@@ -51,6 +52,9 @@ router.get('/support/provinces',           handling(support.allProvinces));
 router.get('/support/provinces/:id',       handling(support.idProvince));
 router.get('/support/provinces/:id/towns', handling(support.idProvinceTowns));
 router.get('/support/supplies',            handling(support.allSupplies));
+
+router.get('/admin/request-supplies', token.verifyAdmin, handling(admin.allRequestSupplies));
+router.get('/admin/request-supplies/:id', token.verifyAdmin, handling(admin.requestSupply));
 
 // for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));
