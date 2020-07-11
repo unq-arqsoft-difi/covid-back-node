@@ -40,6 +40,7 @@ const rejectRequestSupply = async (req, res) => {
 
   const requestSupply = await RequestSupply.findOne({ where: { id } });
   if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
+  if (requestSupply.status !== 'Pending') throw new BadRequestResponse('Request Supply is not Pending');
 
   requestSupply.status = 'Rejected';
   await requestSupply.save();
