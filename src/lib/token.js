@@ -1,7 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { UNAUTHORIZED } = require('http-status-codes');
-const ApiError = require('./api-error');
+const { UnauthorizedResponse } = require('./api-error');
 
 const secret = process.env.ACCESS_TOKEN_SECRET;
 
@@ -13,8 +12,19 @@ const verify = (req, res, next) => {
     req.jwt = jwt.verify(token, secret);
     next();
   } catch (error) {
-    throw new ApiError('Invalid Token', UNAUTHORIZED);
+    throw new UnauthorizedResponse('Invalid Token');
   }
 };
 
-module.exports = { sign, verify };
+const verifyAdmin = (req, res, next) => {
+  try {
+    const token = (req.headers.authorization || '').replace('Bearer', '').trim();
+    req.jwt = jwt.verify(token, secret);
+    if (!req.jwt.admin) throw new Error();
+    next();
+  } catch (error) {
+    throw new UnauthorizedResponse('Invalid Token');
+  }
+};
+
+module.exports = { sign, verify, verifyAdmin };
