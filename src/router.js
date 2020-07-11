@@ -53,8 +53,21 @@ router.get('/support/provinces/:id',       handling(support.idProvince));
 router.get('/support/provinces/:id/towns', handling(support.idProvinceTowns));
 router.get('/support/supplies',            handling(support.allSupplies));
 
-router.get('/admin/request-supplies', token.verifyAdmin, handling(admin.allRequestSupplies));
-router.get('/admin/request-supplies/:id', token.verifyAdmin, handling(admin.requestSupply));
+router.get(
+  '/admin/request-supplies',
+  token.verifyAdmin,
+  handling(admin.allRequestSupplies),
+);
+router.get(
+  '/admin/request-supplies/:id',
+  token.verifyAdmin,
+  handling(admin.getRequestSupply),
+);
+router.put(
+  '/admin/request-supplies/:id/reject',
+  token.verifyAdmin,
+  handling(admin.rejectRequestSupply),
+);
 
 // for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));

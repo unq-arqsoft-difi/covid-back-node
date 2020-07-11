@@ -21,7 +21,7 @@ const allRequestSupplies = async (req, res) => {
 /**
  * GET /admin/request-supplies/:id
  */
-const requestSupply = async (req, res) => {
+const getRequestSupply = async (req, res) => {
   const { id } = req.params;
   const { status } = req.query;
   const where = { id };
@@ -32,7 +32,23 @@ const requestSupply = async (req, res) => {
   return res.jsonOK(newRS);
 };
 
+/**
+ * PUT /admin/request-supplies/:id/reject
+ */
+const rejectRequestSupply = async (req, res) => {
+  const { id } = req.params;
+
+  const requestSupply = await RequestSupply.findOne({ where: { id } });
+  if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
+
+  requestSupply.status = 'Rejected';
+  await requestSupply.save();
+
+  return res.jsonOK(requestSupply);
+};
+
 module.exports = {
-  requestSupply,
   allRequestSupplies,
+  getRequestSupply,
+  rejectRequestSupply,
 };
