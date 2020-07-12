@@ -1,6 +1,7 @@
 const {
   Area,
   Institution,
+  Provider,
   Province,
   Supply,
   Town,
@@ -16,6 +17,7 @@ const allAreas = allFrom(Area);
 const allInstitutions = allFrom(Institution);
 const allProvinces = allFrom(Province);
 const allSupplies = allFrom(Supply);
+const allProviders = allFrom(Provider);
 
 const idProvince = async (req, res) => {
   const { id } = req.params;
@@ -46,6 +48,7 @@ const idProvinceTowns = async (req, res) => {
 module.exports = {
   allAreas,
   allInstitutions,
+  allProviders,
   allProvinces,
   allSupplies,
   idProvince,

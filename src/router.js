@@ -52,6 +52,7 @@ router.get('/support/provinces',           handling(support.allProvinces));
 router.get('/support/provinces/:id',       handling(support.idProvince));
 router.get('/support/provinces/:id/towns', handling(support.idProvinceTowns));
 router.get('/support/supplies',            handling(support.allSupplies));
+router.get('/support/providers',           handling(support.allProviders));
 
 router.get(
   '/admin/request-supplies',
