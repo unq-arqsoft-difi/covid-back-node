@@ -65,12 +65,9 @@ const getRequestSupply = async (req, res) => {
  */
 const cancelRequestSupply = async (req, res) => {
   const { id } = req.params;
-  const { status } = req.query;
   const user = await User.findOne({ where: { email: req.jwt.email } });
 
-  const where = { id, userId: user.id };
-  if (status) where.status = status;
-  const requestSupply = await RequestSupply.findOne({ where });
+  const requestSupply = await RequestSupply.findOne({ where: { id, userId: user.id } });
   if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
 
   requestSupply.status = 'Canceled';
