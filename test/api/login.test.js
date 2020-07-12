@@ -21,6 +21,8 @@ describe('Auth', () => {
     });
     expect(res.status).toBe(OK);
     expect(res.body).toHaveProperty('token');
+    expect(res.body).toHaveProperty('admin');
+    expect(res.body.admin).toEqual(null);
   });
 
   test('should response 400 when login has invalid email', async () => {

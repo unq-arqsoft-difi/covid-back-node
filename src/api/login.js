@@ -29,7 +29,10 @@ const login = async (req, res) => {
   const user = await authUser(email, pass);
   if (user) {
     const jwt = token.sign({ email, admin: user.admin });
-    res.jsonOK({ token: jwt });
+    res.jsonOK({
+      admin: user.admin,
+      token: jwt,
+    });
   } else {
     res.status(BAD_REQUEST).json({
       token: false,
