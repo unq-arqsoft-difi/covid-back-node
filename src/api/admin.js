@@ -5,6 +5,17 @@ const {
 
 // ----- Private -----
 
+const changeStatusFromPending = async (id, newStatus) => {
+  const requestSupply = await RequestSupply.findOne({ where: { id } });
+  if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
+  if (requestSupply.status !== 'Pending') throw new BadRequestResponse('Request Supply is not Pending');
+
+  requestSupply.status = newStatus;
+  await requestSupply.save();
+
+  return requestSupply;
+};
+
 // ----- Public -----
 
 /**
@@ -33,23 +44,24 @@ const getRequestSupply = async (req, res) => {
 };
 
 /**
+ * PUT /admin/request-supplies/:id/approve
+ */
+const approveRequestSupply = async (req, res) => {
+  const requestSupply = await changeStatusFromPending(req.params.id, 'Approved');
+  return res.jsonOK(requestSupply);
+};
+
+/**
  * PUT /admin/request-supplies/:id/reject
  */
 const rejectRequestSupply = async (req, res) => {
-  const { id } = req.params;
-
-  const requestSupply = await RequestSupply.findOne({ where: { id } });
-  if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
-  if (requestSupply.status !== 'Pending') throw new BadRequestResponse('Request Supply is not Pending');
-
-  requestSupply.status = 'Rejected';
-  await requestSupply.save();
-
+  const requestSupply = await changeStatusFromPending(req.params.id, 'Rejected');
   return res.jsonOK(requestSupply);
 };
 
 module.exports = {
   allRequestSupplies,
+  approveRequestSupply,
   getRequestSupply,
   rejectRequestSupply,
 };

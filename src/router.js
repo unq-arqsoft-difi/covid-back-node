@@ -64,6 +64,11 @@ router.get(
   handling(admin.getRequestSupply),
 );
 router.put(
+  '/admin/request-supplies/:id/approve',
+  token.verifyAdmin,
+  handling(admin.approveRequestSupply),
+);
+router.put(
   '/admin/request-supplies/:id/reject',
   token.verifyAdmin,
   handling(admin.rejectRequestSupply),

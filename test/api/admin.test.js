@@ -152,9 +152,87 @@ describe('Admin Request Supplies', () => {
     });
   });
 
+  describe('PUT /request-supplies/:id/approve', () => {
+    test('Without Token response error', async () => {
+      const res = await api.put('/admin/request-supplies/1/approve', {}, token);
+      expect(res).not.toBeValidToken();
+    });
+
+    describe('With Token', () => {
+      test('Approve when is Pending', async () => {
+        const rs = await RequestSupply.create({
+          userId: notAdminUser.id,
+          supply: { name: 'Gloves', stock: 1000 },
+          area: { name: 'The Citadel' },
+          amount: 10,
+          status: 'Pending',
+        }, {
+          include: [
+            { model: Supply, as: 'supply' },
+            { model: Area, as: 'area' },
+          ],
+        });
+
+        let res = await api.get(`/admin/request-supplies/${rs.id}`, tokenAdmin);
+        expect(res.status).toBe(OK);
+        expect(res.body).toContainEntry(['status', 'Pending']);
+
+        res = await api.put(`/admin/request-supplies/${rs.id}/approve`, {}, tokenAdmin);
+        expect(res.status).toBe(OK);
+        expect(res.body).toBeObject();
+        expect(res.body).toContainEntry(['status', 'Approved']);
+        expect(res.body).toContainEntry(['id', 1]);
+        expect(res.body).toContainEntry(['userId', notAdminUser.id]);
+        expect(res.body).toContainEntry(['supplyId', 1]);
+        expect(res.body).toContainEntry(['areaId', 1]);
+        expect(res.body).toContainEntry(['amount', 10]);
+      });
+
+      test('Error when id not Pending', async () => {
+        const rs = await RequestSupply.create({
+          userId: notAdminUser.id,
+          supply: { name: 'Gloves', stock: 1000 },
+          area: { name: 'The Citadel' },
+          amount: 30,
+          status: 'Canceled',
+        }, {
+          include: [
+            { model: Supply, as: 'supply' },
+            { model: Area, as: 'area' },
+          ],
+        });
+
+        const res = await api.put(`/admin/request-supplies/${rs.id}/approve`, {}, tokenAdmin);
+        expect(res.status).toBe(BAD_REQUEST);
+        expect(res.body).toContainEntry(['status', BAD_REQUEST]);
+        expect(res.body).toContainEntry(['message', 'Request Supply is not Pending']);
+      });
+
+      test('Error when invalid id', async () => {
+        const rs = await RequestSupply.create({
+          userId: notAdminUser.id,
+          supply: { name: 'Gloves', stock: 1000 },
+          area: { name: 'The Citadel' },
+          amount: 30,
+          status: 'Approved',
+        }, {
+          include: [
+            { model: Supply, as: 'supply' },
+            { model: Area, as: 'area' },
+          ],
+        });
+
+        const res = await api.put(`/admin/request-supplies/${rs.id + 1}/approve`, {}, tokenAdmin);
+        expect(res.status).toBe(BAD_REQUEST);
+        expect(res.body).toContainEntry(['status', BAD_REQUEST]);
+        expect(res.body).toContainEntry(['message', 'Request Supply not exists']);
+      });
+    });
+  });
+
   describe('PUT /request-supplies/:id/reject', () => {
     test('Without Token response error', async () => {
-      const res = await api.get('/admin/request-supplies', token);
+      const res = await api.put('/admin/request-supplies/1/reject', {}, token);
       expect(res).not.toBeValidToken();
     });
 
