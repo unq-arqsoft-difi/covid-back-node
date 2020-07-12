@@ -3,6 +3,7 @@ const { api, clearDatabase } = require('../test-case');
 const {
   Area,
   Institution,
+  Provider,
   Province,
   Supply,
   Town,
@@ -153,6 +154,31 @@ describe('/support', () => {
         id: 1,
         name: 'Gloves',
         stock: 10000,
+      });
+    });
+  });
+
+  describe('providers', () => {
+    test('Empty list', async () => {
+      const res = await api.get('/support/providers');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(0);
+    });
+
+    test('With a Provider', async () => {
+      await Provider.create({
+        id: 1,
+        name: 'Conicet',
+        stock: 10000,
+      });
+      const res = await api.get('/support/providers');
+      expect(res.status).toBe(OK);
+      expect(res.body).toBeArrayOfSize(1);
+
+      const [supply] = res.body;
+      expect(supply).toEqual({
+        id: '1',
+        name: 'Conicet',
       });
     });
   });

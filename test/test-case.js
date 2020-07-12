@@ -6,6 +6,7 @@ const app = require('../src/server');
 const {
   Area,
   Institution,
+  Provider,
   Province,
   RequestSupply,
   Supply,
@@ -31,6 +32,7 @@ const clearDatabase = async () => {
   await User.sync({ force: true });
   await Area.sync({ force: true });
   await Institution.sync({ force: true });
+  await Provider.sync({ force: true });
   await Province.sync({ force: true });
   await Town.sync({ force: true });
 };
