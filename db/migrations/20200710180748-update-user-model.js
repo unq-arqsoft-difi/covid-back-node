@@ -41,8 +41,8 @@ module.exports = {
         defaultValue: false,
       }, { transaction });
 
-      await queryInterface.changeColumn('Users', 'entity', { allowNull: true }, { transaction });
-      await queryInterface.changeColumn('Users', 'place', { allowNull: true }, { transaction });
+      await queryInterface.removeColumn('Users', 'entity', { transaction });
+      await queryInterface.removeColumn('Users', 'place', { transaction });
 
       await transaction.commit();
     } catch (err) {
@@ -51,13 +51,21 @@ module.exports = {
     }
   },
 
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.removeColumn('Users', 'institutionId', { transaction });
       await queryInterface.removeColumn('Users', 'provinceId', { transaction });
       await queryInterface.removeColumn('Users', 'townId', { transaction });
       await queryInterface.removeColumn('Users', 'admin', { transaction });
+      await queryInterface.addColumn('Users', 'entity', {
+        type: Sequelize.STRING,
+        allowNull: false,
+      }, { transaction });
+      await queryInterface.addColumn('Users', 'place', {
+        type: Sequelize.STRING,
+        allowNull: false,
+      }, { transaction });
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();
