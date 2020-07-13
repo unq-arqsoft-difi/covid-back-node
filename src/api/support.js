@@ -34,7 +34,7 @@ const idProvinceTowns = async (req, res) => {
     include: [{
       model: Town,
       as: 'towns',
-      attributes: { exclude: [...Town.options.defaultScope.attributes.exclude, 'ProvinceId'] },
+      attributes: { exclude: [...Town.options.defaultScope.attributes.exclude, 'provinceId'] },
     }],
     order: [
       [{ model: Town, as: 'towns' }, 'name', 'ASC'],

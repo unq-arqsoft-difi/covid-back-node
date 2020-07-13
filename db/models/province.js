@@ -12,7 +12,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Province.associate = (models) => {
-    Province.hasMany(models.Town, { as: 'towns' });
+    Province.hasMany(models.Town, {
+      as: 'towns',
+      foreignKey: {
+        name: 'provinceId',
+        allowNull: true,
+      },
+    });
   };
 
   return Province;
