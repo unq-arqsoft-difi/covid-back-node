@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
   }, {
+    order: [['name', 'ASC']],
     defaultScope: {
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     },

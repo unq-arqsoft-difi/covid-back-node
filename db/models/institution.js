@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Institution',
+    order: [['name', 'ASC']],
     defaultScope: {
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     },
