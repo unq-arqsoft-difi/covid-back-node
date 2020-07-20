@@ -25,7 +25,7 @@ const allRequestSupplies = async (req, res) => {
   const where = {};
   const { status } = req.query;
   if (status) where.status = status;
-  const requestSupplies = await RequestSupply.findAll({ where });
+  const requestSupplies = await RequestSupply.findAll({ where, order: [['createdAt', 'DESC']] });
   return res.jsonOK(requestSupplies);
 };
 

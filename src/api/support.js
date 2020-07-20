@@ -9,7 +9,7 @@ const {
 
 // ----- Private -----
 
-const allFrom = model => async (req, res) => res.jsonOK(await model.findAll());
+const allFrom = model => async (req, res) => res.jsonOK(await model.findAll({ order: [['name', 'ASC']] }));
 
 // ----- Public -----
 
