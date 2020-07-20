@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'RequestSupply',
+    defaultScope: {
+      include: ['area', 'user', 'supply'],
+    },
   });
 
   return RequestSupply;

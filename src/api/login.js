@@ -30,6 +30,9 @@ const login = async (req, res) => {
   if (user) {
     const jwt = token.sign({ email, admin: user.admin });
     res.jsonOK({
+      email,
+      name: `${user.firstName} ${user.lastName}`,
+      job: `${user.job}`,
       admin: user.admin,
       token: jwt,
     });
