@@ -4,7 +4,7 @@ ENV NODE_ENV=production
 
 WORKDIR /opt/app
 
-COPY .sequelizerc index.js package.json yarn.lock /opt/app/
+COPY .sequelizerc index.js package.json package-lock.json /opt/app/
 COPY wait-for-it.sh /opt/app/
 COPY src/ /opt/app/src/
 COPY db/config.json /opt/app/db/config.json
@@ -13,7 +13,7 @@ COPY db/models/ /opt/app/db/models/
 COPY db/seeders/ /opt/app/db/seeders/
 
 RUN chmod +x /opt/app/wait-for-it.sh
-RUN yarn install --production --frozen-lockfile
+RUN npm install
 
 # Deploy stage
 FROM node:13-alpine
@@ -24,4 +24,4 @@ ENV NODE_ENV=production
 COPY --from=builder /opt/app/ /opt/app/
 WORKDIR /opt/app
 
-CMD [ "yarn", "start" ]
+CMD [ "npm", "start" ]

@@ -16,9 +16,9 @@
 ```sh
 git clone https://github.com/unq-arqsoft-difi/covid-back-node.git
 cd covid-back-node
-yarn install
+npm i
 npx sequelize db:migrate
-yarn run start
+npm run start
 ```
 
 La API quedará levantada en `http://localhost:9001`
@@ -35,7 +35,7 @@ cd covid-back-node
 ### Install
 
 ```sh
-yarn install
+npm i
 ```
 
 ### Run Migrations
@@ -47,7 +47,7 @@ npx sequelize db:migrate
 ### Start
 
 ```sh
-yarn run start
+npm run start
 ```
 
 La API quedará levantada en `http://localhost:9001`
