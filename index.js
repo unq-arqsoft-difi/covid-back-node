@@ -1,4 +1,4 @@
-const { printRoutes } = require('@leandrojdl/express-routes');
+const { printRoutes } = require('express-routes');
 const app             = require('./src/server');
 
 const port = process.env.SERVER_PORT || 9004;
