@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { check, validationResult } = require('express-validator');
-const { BAD_REQUEST, NOT_FOUND } = require('http-status-codes');
+const { BAD_REQUEST, NOT_FOUND } = require('http-status-codes').StatusCodes;
 const token = require('../lib/token');
 const { User } = require('../../db/models');
 

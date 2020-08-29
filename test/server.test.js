@@ -1,4 +1,4 @@
-const { NOT_FOUND } = require('http-status-codes');
+const { NOT_FOUND } = require('http-status-codes').StatusCodes;
 const { api } = require('./test-case');
 
 describe('Server', () => {

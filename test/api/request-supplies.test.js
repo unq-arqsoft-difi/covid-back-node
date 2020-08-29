@@ -1,4 +1,4 @@
-const { OK, CREATED, BAD_REQUEST } = require('http-status-codes');
+const { OK, CREATED, BAD_REQUEST } = require('http-status-codes').StatusCodes;
 const { api, clearDatabase } = require('../test-case');
 const builder = require('../builder');
 const {

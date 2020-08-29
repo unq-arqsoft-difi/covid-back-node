@@ -1,5 +1,5 @@
 require('jest-extended');
-const { UNAUTHORIZED } = require('http-status-codes');
+const { UNAUTHORIZED } = require('http-status-codes').StatusCodes;
 
 expect.extend({
   toBeValidToken(res) {

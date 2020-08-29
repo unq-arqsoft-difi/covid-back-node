@@ -16,10 +16,10 @@ before_install:
   - mv deploy_key_difi_back ~/.ssh/id_rsa
   - popd
 
-before_script: yarn run lint
-script: yarn test:ci
+before_script: npm run lint
+script: npm run test:ci
 after_success: 
-  - yarn coveralls
+  - npm run coveralls
   - bash .travis/docker_and_deploy.sh
 
 email:
