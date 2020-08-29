@@ -1,4 +1,4 @@
-const { OK, NOT_FOUND } = require('http-status-codes');
+const { OK, NOT_FOUND } = require('http-status-codes').StatusCodes;
 const { api, clearDatabase } = require('../test-case');
 const {
   Area,

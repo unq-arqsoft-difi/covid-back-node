@@ -1,5 +1,5 @@
 const { check, validationResult } = require('express-validator');
-const { CREATED } = require('http-status-codes');
+const { CREATED } = require('http-status-codes').StatusCodes;
 const {
   Institution,
   Province,

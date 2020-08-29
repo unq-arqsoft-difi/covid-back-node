@@ -1,4 +1,4 @@
-const { NOT_FOUND, OK } = require('http-status-codes');
+const { NOT_FOUND, OK } = require('http-status-codes').StatusCodes;
 
 function jsonOK(data) {
   this.type('application/json')

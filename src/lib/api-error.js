@@ -3,7 +3,7 @@ const {
   BAD_REQUEST,
   FORBIDDEN,
   UNAUTHORIZED,
-} = require('http-status-codes');
+} = require('http-status-codes').StatusCodes;
 
 class ApiError extends Error {
   constructor(message, status = BAD_REQUEST, errors = []) {
