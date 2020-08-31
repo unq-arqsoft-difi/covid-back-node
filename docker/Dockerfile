@@ -1,5 +1,5 @@
 # Builder stage
-FROM node:13-alpine as builder
+FROM node:12-alpine as builder
 ENV NODE_ENV=production
 
 WORKDIR /opt/app
@@ -16,7 +16,7 @@ RUN chmod +x /opt/app/wait-for-it.sh
 RUN npm install
 
 # Deploy stage
-FROM node:13-alpine
+FROM node:12-alpine
 RUN apk add --no-cache bash=~5
 
 ENV NODE_ENV=production
