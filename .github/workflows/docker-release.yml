@@ -27,7 +27,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v1
         with:
+          dockerfile: ./docker/Dockerfile
+          repository: unqdifi/covid-back-node
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: 12cactus/espi
           tag_with_ref: true
