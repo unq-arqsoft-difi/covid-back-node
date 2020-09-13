@@ -22,27 +22,25 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
         with:
-          dockerfile: ./docker/Dockerfile
-          repository: unqdifi/covid-back-node
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: latest
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Make Deploy
-        uses: appleboy/ssh-action@master
+      
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          passphrase: ${{ secrets.DEPLOY_PASSPHRASE }}
-          port: ${{ secrets.DEPLOY_PORT }}
-          script: ${{ secrets.DEPLOY_SCRIPT }}
+          push: true
+          file: ./docker/Dockerfile
+          tags: unqdifi/covid-back-node:latest
+      
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
