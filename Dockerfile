@@ -13,7 +13,7 @@ COPY db/models/ /opt/app/db/models/
 COPY db/seeders/ /opt/app/db/seeders/
 
 RUN chmod +x /opt/app/wait-for-it.sh
-RUN npm install
+RUN npm ci
 
 # Deploy stage
 FROM node:12-alpine
