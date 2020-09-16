@@ -64,15 +64,10 @@ router.get(
   token.verifyAdmin,
   handling(admin.getRequestSupply),
 );
-router.put(
-  '/admin/request-supplies/:id/approve',
+router.patch(
+  '/admin/request-supplies/:id',
   token.verifyAdmin,
-  handling(admin.approveRequestSupply),
-);
-router.put(
-  '/admin/request-supplies/:id/reject',
-  token.verifyAdmin,
-  handling(admin.rejectRequestSupply),
+  handling(admin.upgradeRequestSupplyStatus),
 );
 
 // for testing connection only

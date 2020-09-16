@@ -1,13 +1,12 @@
 const { BadRequestResponse } = require('../lib/api-error');
-const {
-  RequestSupply,
-} = require('../../db/models');
+const { RequestSupply } = require('../../db/models');
 
 // ----- Private -----
 
 const changeStatusFromPending = async (id, newStatus) => {
   const requestSupply = await RequestSupply.findOne({ where: { id } });
   if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
+  if (!['Approved', 'Rejected'].includes(newStatus)) throw new BadRequestResponse('Invalid Request Supply Status');
   if (requestSupply.status !== 'Pending') throw new BadRequestResponse('Request Supply is not Pending');
 
   requestSupply.status = newStatus;
@@ -44,24 +43,16 @@ const getRequestSupply = async (req, res) => {
 };
 
 /**
- * PUT /admin/request-supplies/:id/approve
+ * PATCH /admin/request-supplies/:id
+ * body: { status: 'Approved' } | { status: 'Rejected' }
  */
-const approveRequestSupply = async (req, res) => {
-  const requestSupply = await changeStatusFromPending(req.params.id, 'Approved');
-  return res.jsonOK(requestSupply);
-};
-
-/**
- * PUT /admin/request-supplies/:id/reject
- */
-const rejectRequestSupply = async (req, res) => {
-  const requestSupply = await changeStatusFromPending(req.params.id, 'Rejected');
+const upgradeRequestSupplyStatus = async (req, res) => {
+  const requestSupply = await changeStatusFromPending(req.params.id, req.body.status);
   return res.jsonOK(requestSupply);
 };
 
 module.exports = {
   allRequestSupplies,
-  approveRequestSupply,
   getRequestSupply,
-  rejectRequestSupply,
+  upgradeRequestSupplyStatus,
 };

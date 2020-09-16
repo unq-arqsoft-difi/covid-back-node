@@ -23,6 +23,7 @@ const api = {
   get: (path, token) => withToken(request(app).get(path), token),
   put: (path, data = {}, token) => withToken(request(app).put(path).send(data), token),
   post: (path, data = {}, token) => withToken(request(app).post(path).send(data), token),
+  patch: (path, data = {}, token) => withToken(request(app).patch(path).send(data), token),
   delete: (path, token) => withToken(request(app).delete(path), token),
 };
 
