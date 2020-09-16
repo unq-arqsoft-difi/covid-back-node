@@ -5,7 +5,7 @@ const { User } = require('../../db/models');
 describe('Auth', () => {
   beforeEach(async () => clearDatabase());
 
-  test('should response 200 when login is successfully', async () => {
+  test('should response 200 when session is successfully created', async () => {
     const user = {
       firstName: 'Jon',
       lastName: 'Snow',
@@ -15,7 +15,7 @@ describe('Auth', () => {
       pass: '1234',
     };
     await User.create(user);
-    const res = await api.post('/login', {
+    const res = await api.post('/session', {
       email: user.email,
       pass: user.pass,
     });
@@ -25,8 +25,8 @@ describe('Auth', () => {
     expect(res.body.admin).toEqual(null);
   });
 
-  test('should response 400 when login has invalid email', async () => {
-    const res = await api.post('/login', {
+  test('should response 400 when session creation has invalid email', async () => {
+    const res = await api.post('/session', {
       email: 'jon.snow@winterfell.com',
       pass: '1234',
     });
@@ -37,8 +37,8 @@ describe('Auth', () => {
     });
   });
 
-  test('should response 400 when login has invalid pass', async () => {
-    const res = await api.post('/login', {
+  test('should response 400 when session creation has invalid pass', async () => {
+    const res = await api.post('/session', {
       email: 'jon.snow@winterfell.com',
       pass: '1234',
     });
