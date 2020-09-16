@@ -10,12 +10,12 @@ const authUser = async (email, pass) => User.findOne({ where: { email, pass } })
 
 // ----- Public -----
 
-const loginFormValidations = [
+const formValidations = [
   check('email', 'E-Mail is required').not().isEmpty(),
   check('pass', 'Pass is required').not().isEmpty(),
 ];
 
-const login = async (req, res) => {
+const create = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -45,4 +45,4 @@ const login = async (req, res) => {
   return res;
 };
 
-module.exports = { login, loginFormValidations };
+module.exports = { create, formValidations };

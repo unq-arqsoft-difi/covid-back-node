@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 const express  = require('express');
-const login    = require('./api/login');
+const session  = require('./api/session');
 const supplies = require('./api/request-supplies');
 const support  = require('./api/support');
 const token    = require('./lib/token');
@@ -22,8 +22,8 @@ const handling = callback => async (req, res, next) => {
 
 // router.METHOD('path', [middleware,] callback)
 
-router.post('/login', login.loginFormValidations, handling(login.login));
-router.post('/users', users.formValidations,      handling(users.registry));
+router.post('/session', session.formValidations, handling(session.create));
+router.post('/users', users.formValidations,     handling(users.registry));
 
 router.post(
   '/request-supplies',

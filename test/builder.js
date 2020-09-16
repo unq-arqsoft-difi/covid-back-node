@@ -54,7 +54,7 @@ const register = async data => User.create({
   ...data,
 });
 
-const login = async data => api.post('/login', {
+const login = async data => api.post('/session', {
   email: 'jon.snow@winterfell.com',
   pass: '1234',
   ...data,
