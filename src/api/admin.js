@@ -18,32 +18,7 @@ const changeStatusFromPending = async (id, newStatus) => {
 // ----- Public -----
 
 /**
- * GET /admin/request-supplies
- */
-const allRequestSupplies = async (req, res) => {
-  const where = {};
-  const { status } = req.query;
-  if (status) where.status = status;
-  const requestSupplies = await RequestSupply.findAll({ where, order: [['createdAt', 'DESC']] });
-  return res.jsonOK(requestSupplies);
-};
-
-/**
- * GET /admin/request-supplies/:id
- */
-const getRequestSupply = async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.query;
-  const where = { id };
-  if (status) where.status = status;
-  const newRS = await RequestSupply.findOne({ where });
-  if (!newRS) throw new BadRequestResponse('Request Supply not exists');
-
-  return res.jsonOK(newRS);
-};
-
-/**
- * PATCH /admin/request-supplies/:id
+ * PATCH /request-supplies/:id
  * body: { status: 'Approved' } | { status: 'Rejected' }
  */
 const upgradeRequestSupplyStatus = async (req, res) => {
@@ -52,7 +27,5 @@ const upgradeRequestSupplyStatus = async (req, res) => {
 };
 
 module.exports = {
-  allRequestSupplies,
-  getRequestSupply,
   upgradeRequestSupplyStatus,
 };

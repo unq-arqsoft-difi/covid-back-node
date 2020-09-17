@@ -19,15 +19,10 @@ describe('Admin Request Supplies', () => {
     tokenAdmin = await builder.generateTokenAdmin({ email: 'jon@snow.com' });
   });
 
-  describe('GET /admin/request-supplies', () => {
-    test('With not Admin Token response error', async () => {
-      const res = await api.get('/admin/request-supplies', token);
-      expect(res).not.toBeValidToken();
-    });
-
+  describe('GET /request-supplies', () => {
     describe('With Admin Token', () => {
       test('Empty list', async () => {
-        const res = await api.get('/admin/request-supplies', tokenAdmin);
+        const res = await api.get('/request-supplies', tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toBeArrayOfSize(0);
       });
@@ -46,7 +41,7 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        const res = await api.get('/admin/request-supplies', tokenAdmin);
+        const res = await api.get('/request-supplies', tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toBeArrayOfSize(1);
         const [reqSupply] = res.body;
@@ -79,11 +74,11 @@ describe('Admin Request Supplies', () => {
           status: 'Pending',
         });
 
-        let res = await api.get('/admin/request-supplies', tokenAdmin);
+        let res = await api.get('/request-supplies', tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toBeArrayOfSize(2);
 
-        res = await api.get('/admin/request-supplies?status=Pending', tokenAdmin);
+        res = await api.get('/request-supplies?status=Pending', tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toBeArrayOfSize(1);
 
@@ -98,12 +93,7 @@ describe('Admin Request Supplies', () => {
     });
   });
 
-  describe('GET /admin/request-supplies/:id', () => {
-    test('Without not Admin Token response error', async () => {
-      const res = await api.get('/admin/request-supplies', token);
-      expect(res).not.toBeValidToken();
-    });
-
+  describe('GET /request-supplies/:id', () => {
     describe('With Token', () => {
       test('With data', async () => {
         const rs = await RequestSupply.create({
@@ -119,7 +109,7 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        const res = await api.get(`/admin/request-supplies/${rs.id}`, tokenAdmin);
+        const res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
         expect(res.body).toContainEntry(['id', 1]);
@@ -144,7 +134,7 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        const res = await api.get(`/admin/request-supplies/${rs.id + 1}`, tokenAdmin);
+        const res = await api.get(`/request-supplies/${rs.id + 1}`, tokenAdmin);
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
         expect(res.body).toContainEntry(['message', 'Request Supply not exists']);
@@ -154,7 +144,7 @@ describe('Admin Request Supplies', () => {
 
   describe('PATCH /request-supplies/:id { "status": "Approved" }', () => {
     test('Without Token response error', async () => {
-      const res = await api.patch('/admin/request-supplies/1', { status: 'Approved' }, token);
+      const res = await api.patch('/request-supplies/1', { status: 'Approved' }, token);
       expect(res).not.toBeValidToken();
     });
 
@@ -173,11 +163,11 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        let res = await api.get(`/admin/request-supplies/${rs.id}`, tokenAdmin);
+        let res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toContainEntry(['status', 'Pending']);
 
-        res = await api.patch(`/admin/request-supplies/${rs.id}`, { status: 'Approved' }, tokenAdmin);
+        res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Approved' }, tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
         expect(res.body).toContainEntry(['status', 'Approved']);
@@ -202,11 +192,11 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        let res = await api.get(`/admin/request-supplies/${rs.id}`, tokenAdmin);
+        let res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toContainEntry(['status', 'Pending']);
 
-        res = await api.patch(`/admin/request-supplies/${rs.id}`, { status: 'Rejected' }, tokenAdmin);
+        res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Rejected' }, tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
         expect(res.body).toContainEntry(['status', 'Rejected']);
@@ -231,7 +221,7 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        const res = await api.patch(`/admin/request-supplies/${rs.id}`, { status: 'Approved' }, tokenAdmin);
+        const res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Approved' }, tokenAdmin);
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
         expect(res.body).toContainEntry(['message', 'Request Supply is not Pending']);
@@ -251,7 +241,7 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        const res = await api.patch(`/admin/request-supplies/${rs.id}`, { status: 'Canceled' }, tokenAdmin);
+        const res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Canceled' }, tokenAdmin);
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
         expect(res.body).toContainEntry(['message', 'Invalid Request Supply Status']);
@@ -271,7 +261,7 @@ describe('Admin Request Supplies', () => {
           ],
         });
 
-        const res = await api.patch(`/admin/request-supplies/${rs.id + 1}`, { status: 'Approved' }, tokenAdmin);
+        const res = await api.patch(`/request-supplies/${rs.id + 1}`, { status: 'Approved' }, tokenAdmin);
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
         expect(res.body).toContainEntry(['message', 'Request Supply not exists']);

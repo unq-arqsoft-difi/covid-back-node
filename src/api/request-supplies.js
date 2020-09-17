@@ -34,12 +34,17 @@ const requestValidations = [
  * GET /request-supplies
  */
 const getRequestSupplies = async (req, res) => {
+  const where = {};
   const { status } = req.query;
-  const user = await User.findOne({ where: { email: req.jwt.email } });
 
-  const where = { userId: user.id };
+  // If not admin, filter by user
+  if (!req.jwt.admin) {
+    const user = await User.findOne({ where: { email: req.jwt.email } });
+    where.userId = user.id;
+  }
+
   if (status) where.status = status;
-  const requestSupplies = await RequestSupply.findAll({ where });
+  const requestSupplies = await RequestSupply.findAll({ where, order: [['createdAt', 'DESC']] });
 
   return res.jsonOK(requestSupplies);
 };
@@ -50,15 +55,21 @@ const getRequestSupplies = async (req, res) => {
 const getRequestSupply = async (req, res) => {
   const { id } = req.params;
   const { status } = req.query;
-  const user = await User.findOne({ where: { email: req.jwt.email } });
+  const where = { id };
 
-  const where = { id, userId: user.id };
+  // If not admin, filter by user
+  if (!req.jwt.admin) {
+    const user = await User.findOne({ where: { email: req.jwt.email } });
+    where.userId = user.id;
+  }
+
   if (status) where.status = status;
   const requestSupply = await RequestSupply.findOne({ where });
   if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
 
   return res.jsonOK(requestSupply);
 };
+
 
 /**
  * DELETE /request-supplies/:id
