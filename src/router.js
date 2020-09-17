@@ -7,7 +7,6 @@ const supplies = require('./api/request-supplies');
 const support  = require('./api/support');
 const token    = require('./lib/token');
 const users    = require('./api/users');
-const admin    = require('./api/admin');
 const { ForbiddenResponse } = require('./lib/api-error');
 
 const router = express.Router();
@@ -48,7 +47,7 @@ router.delete(
 router.patch(
   '/request-supplies/:id',
   token.verifyAdmin,
-  handling(admin.upgradeRequestSupplyStatus),
+  handling(supplies.upgradeRequestSupplyStatus),
 );
 
 router.get('/support/areas',               handling(support.allAreas));
