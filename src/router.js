@@ -7,7 +7,6 @@ const supplies = require('./api/request-supplies');
 const support  = require('./api/support');
 const token    = require('./lib/token');
 const users    = require('./api/users');
-const admin    = require('./api/admin');
 const { ForbiddenResponse } = require('./lib/api-error');
 
 const router = express.Router();
@@ -23,7 +22,7 @@ const handling = callback => async (req, res, next) => {
 // router.METHOD('path', [middleware,] callback)
 
 router.post('/session', session.formValidations, handling(session.create));
-router.post('/users', users.formValidations,     handling(users.registry));
+router.post('/users',   users.formValidations,   handling(users.registry));
 
 router.post(
   '/request-supplies',
@@ -45,6 +44,11 @@ router.delete(
   token.verify,
   handling(supplies.cancelRequestSupply),
 );
+router.patch(
+  '/request-supplies/:id',
+  token.verifyAdmin,
+  handling(supplies.upgradeRequestSupplyStatus),
+);
 
 router.get('/support/areas',               handling(support.allAreas));
 router.get('/support/institutions',        handling(support.allInstitutions));
@@ -53,22 +57,6 @@ router.get('/support/provinces/:id',       handling(support.idProvince));
 router.get('/support/provinces/:id/towns', handling(support.idProvinceTowns));
 router.get('/support/supplies',            handling(support.allSupplies));
 router.get('/support/providers',           handling(support.allProviders));
-
-router.get(
-  '/admin/request-supplies',
-  token.verifyAdmin,
-  handling(admin.allRequestSupplies),
-);
-router.get(
-  '/admin/request-supplies/:id',
-  token.verifyAdmin,
-  handling(admin.getRequestSupply),
-);
-router.patch(
-  '/admin/request-supplies/:id',
-  token.verifyAdmin,
-  handling(admin.upgradeRequestSupplyStatus),
-);
 
 // for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));
