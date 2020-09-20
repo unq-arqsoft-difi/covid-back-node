@@ -65,10 +65,10 @@ describe('/support', () => {
       });
     });
 
-    describe('/:id/towns', () => {
+    describe('/:id?include=towns', () => {
       test('Empty towns', async () => {
         await Province.create({ id: '01', name: 'The North' });
-        const res = await api.get('/support/provinces/01/towns');
+        const res = await api.get('/support/provinces/01?include=towns');
         expect(res.status).toBe(OK);
         expect(res.body.towns).toBeArrayOfSize(0);
       });
@@ -80,7 +80,7 @@ describe('/support', () => {
           towns: [{ id: 'ABC', name: 'Winterfell' }],
         }, { include: [{ model: Town, as: 'towns' }] });
 
-        const res = await api.get('/support/provinces/01/towns');
+        const res = await api.get('/support/provinces/01?include=towns');
         expect(res.status).toBe(OK);
         expect(res.body.towns).toBeArrayOfSize(1);
 
