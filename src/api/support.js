@@ -21,25 +21,19 @@ const allProviders = allFrom(Provider);
 
 const idProvince = async (req, res) => {
   const { id } = req.params;
-  const province = await Province.findByPk(id);
-  return province
-    ? res.jsonOK(province)
-    : res.jsonNotFound(`No Province with id '${id}'`);
-};
-
-const idProvinceTowns = async (req, res) => {
-  const { id } = req.params;
-  const province = await Province.findOne({
-    where: { id },
-    include: [{
+  const includeTowns = req.query.include === 'towns';
+  const options = { where: { id } };
+  if (includeTowns) {
+    options.include = [{
       model: Town,
       as: 'towns',
       attributes: { exclude: [...Town.options.defaultScope.attributes.exclude, 'provinceId'] },
-    }],
-    order: [
+    }];
+    options.order = [
       [{ model: Town, as: 'towns' }, 'name', 'ASC'],
-    ],
-  });
+    ];
+  }
+  const province = await Province.findOne(options);
   return province
     ? res.jsonOK(province)
     : res.jsonNotFound(`No Province with id '${id}'`);
@@ -52,5 +46,4 @@ module.exports = {
   allProvinces,
   allSupplies,
   idProvince,
-  idProvinceTowns,
 };
