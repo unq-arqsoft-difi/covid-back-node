@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { check, validationResult } = require('express-validator');
-const { BAD_REQUEST, NOT_FOUND } = require('http-status-codes').StatusCodes;
+const { BAD_REQUEST } = require('http-status-codes').StatusCodes;
 const token = require('../lib/token');
 const { User } = require('../../db/models');
 
@@ -19,7 +19,7 @@ const create = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(NOT_FOUND).json({
+    return res.status(BAD_REQUEST).json({
       created: false,
       errors: errors.array().map(e => e.msg),
     });
