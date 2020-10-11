@@ -1,3 +1,4 @@
+const apiExpressExporter = require('api-express-exporter');
 const cors       = require('cors');
 const morgan     = require('morgan');
 const express    = require('express');
@@ -21,6 +22,11 @@ app.use((req, res, next) => {
   res.jsonNotFound = jsonNotFound;
   next();
 });
+
+if (process.env.NODE_ENV !== 'test') {
+  // api-express-exporter: metrics to prometheus
+  app.use(apiExpressExporter());
+}
 
 // Rutas
 app.use('/', require('./router'));
