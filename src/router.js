@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 const express  = require('express');
+const path     = require('path');
 const session  = require('./api/session');
 const supplies = require('./api/request-supplies');
 const support  = require('./api/support');
@@ -56,6 +57,9 @@ router.get('/support/provinces',           handling(support.allProvinces));
 router.get('/support/provinces/:id',       handling(support.idProvince));
 router.get('/support/supplies',            handling(support.allSupplies));
 router.get('/support/providers',           handling(support.allProviders));
+
+// Swagger + RDoc
+router.get('/docs/api', (req, res) => res.sendFile(path.join(`${__dirname}/docs.html`)));
 
 // for testing connection only
 router.get('/test', (req, res) => res.json({ msg: 'ok' }));
