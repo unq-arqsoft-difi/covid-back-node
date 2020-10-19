@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 if (process.env.NODE_ENV !== 'test') {
   // api-express-exporter: metrics to prometheus
-  app.use(apiExpressExporter());
+  app.use(apiExpressExporter({ host: '0.0.0.0', port: 9991 }));
 }
 
 // Rutas
