@@ -7,10 +7,10 @@ const {
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
 } = require('http-status-codes').StatusCodes;
+const paginate = require('express-paginate');
 const logger = require('./lib/logger');
 const { morganAccess, morganAccessMs } = require('./lib/morgan');
 const { jsonOK, jsonNotFound } = require('./lib/response-helpers');
-const paginate = require('express-paginate');
 
 const app = express();
 
@@ -18,13 +18,13 @@ const app = express();
 app.use(cors());
 app.use(
   morgan('combined', {
-    stream: { write: (message) => morganAccess.info(message) },
-  })
+    stream: { write: message => morganAccess.info(message) },
+  }),
 );
 app.use(
   morgan('short', {
-    stream: { write: (message) => morganAccessMs.info(message) },
-  })
+    stream: { write: message => morganAccessMs.info(message) },
+  }),
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/json' }));

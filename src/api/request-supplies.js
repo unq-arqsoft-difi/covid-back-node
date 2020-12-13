@@ -1,8 +1,10 @@
 const { check, validationResult } = require('express-validator');
 const { CREATED } = require('http-status-codes').StatusCodes;
-const { BadRequestResponse } = require('../lib/api-error');
-const { Area, RequestSupply, Supply, User } = require('../../db/models');
 const paginate = require('express-paginate');
+const { BadRequestResponse } = require('../lib/api-error');
+const {
+  Area, RequestSupply, Supply, User,
+} = require('../../db/models');
 
 // ----- Private -----
 
@@ -11,12 +13,12 @@ const checkValidationsMiddleware = (req) => {
   if (!errors.isEmpty()) {
     throw new BadRequestResponse(
       'Validation Errors',
-      errors.array().map((e) => e.msg)
+      errors.array().map(e => e.msg),
     );
   }
 };
 
-const existsIn = (model) => async (value) => {
+const existsIn = model => async (value) => {
   if (!value) return Promise.reject();
   const count = await model.count({ where: { id: value } });
   return count > 0 ? Promise.resolve() : Promise.reject();
@@ -25,10 +27,8 @@ const existsIn = (model) => async (value) => {
 const changeStatusFromPending = async (id, newStatus) => {
   const requestSupply = await RequestSupply.findOne({ where: { id } });
   if (!requestSupply) throw new BadRequestResponse('Request Supply not exists');
-  if (!['Approved', 'Rejected'].includes(newStatus))
-    throw new BadRequestResponse('Invalid Request Supply Status');
-  if (requestSupply.status !== 'Pending')
-    throw new BadRequestResponse('Request Supply is not Pending');
+  if (!['Approved', 'Rejected'].includes(newStatus)) throw new BadRequestResponse('Invalid Request Supply Status');
+  if (requestSupply.status !== 'Pending') throw new BadRequestResponse('Request Supply is not Pending');
 
   requestSupply.status = newStatus;
   await requestSupply.save();
@@ -145,7 +145,7 @@ const createRequestSupply = async (req, res) => {
 const upgradeRequestSupplyStatus = async (req, res) => {
   const requestSupply = await changeStatusFromPending(
     req.params.id,
-    req.body.status
+    req.body.status,
   );
   return res.jsonOK(requestSupply);
 };

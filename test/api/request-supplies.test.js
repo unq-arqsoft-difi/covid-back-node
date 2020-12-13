@@ -1,7 +1,9 @@
 const { OK, CREATED, BAD_REQUEST } = require('http-status-codes').StatusCodes;
 const { api, clearDatabase } = require('../test-case');
 const builder = require('../builder');
-const { Area, RequestSupply, Supply, User } = require('../../db/models');
+const {
+  Area, RequestSupply, Supply, User,
+} = require('../../db/models');
 
 describe('Request Supplies', () => {
   let token;
@@ -41,7 +43,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.get('/request-supplies', token);
@@ -70,7 +72,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
         await RequestSupply.create({
           userId: loggedUser.id,
@@ -119,7 +121,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.get('/request-supplies', tokenAdmin);
@@ -148,7 +150,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
         await RequestSupply.create({
           userId: loggedUser.id,
@@ -198,7 +200,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.get(`/request-supplies/${rs.id}`, token);
@@ -227,7 +229,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.get(`/request-supplies/${rs.id}`, token);
@@ -255,7 +257,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
@@ -283,7 +285,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.get(`/request-supplies/${rs.id + 1}`, tokenAdmin);
@@ -318,7 +320,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         let res = await api.get(`/request-supplies/${rs.id}`, token);
@@ -351,7 +353,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.delete(`/request-supplies/${rs.id}`, token);
@@ -370,7 +372,7 @@ describe('Request Supplies', () => {
       const res = await api.patch(
         '/request-supplies/1',
         { status: 'Approved' },
-        token
+        token,
       );
       expect(res).not.toBeValidToken();
     });
@@ -390,7 +392,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         let res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
@@ -400,7 +402,7 @@ describe('Request Supplies', () => {
         res = await api.patch(
           `/request-supplies/${rs.id}`,
           { status: 'Approved' },
-          tokenAdmin
+          tokenAdmin,
         );
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
@@ -426,7 +428,7 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         let res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
@@ -436,7 +438,7 @@ describe('Request Supplies', () => {
         res = await api.patch(
           `/request-supplies/${rs.id}`,
           { status: 'Rejected' },
-          tokenAdmin
+          tokenAdmin,
         );
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
@@ -462,13 +464,13 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.patch(
           `/request-supplies/${rs.id}`,
           { status: 'Approved' },
-          tokenAdmin
+          tokenAdmin,
         );
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
@@ -492,13 +494,13 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.patch(
           `/request-supplies/${rs.id}`,
           { status: 'Canceled' },
-          tokenAdmin
+          tokenAdmin,
         );
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
@@ -522,13 +524,13 @@ describe('Request Supplies', () => {
               { model: Supply, as: 'supply' },
               { model: Area, as: 'area' },
             ],
-          }
+          },
         );
 
         const res = await api.patch(
           `/request-supplies/${rs.id + 1}`,
           { status: 'Approved' },
-          tokenAdmin
+          tokenAdmin,
         );
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
