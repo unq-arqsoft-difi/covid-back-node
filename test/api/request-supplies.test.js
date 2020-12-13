@@ -1,12 +1,7 @@
 const { OK, CREATED, BAD_REQUEST } = require('http-status-codes').StatusCodes;
 const { api, clearDatabase } = require('../test-case');
 const builder = require('../builder');
-const {
-  Area,
-  RequestSupply,
-  Supply,
-  User,
-} = require('../../db/models');
+const { Area, RequestSupply, Supply, User } = require('../../db/models');
 
 describe('Request Supplies', () => {
   let token;
@@ -29,27 +24,30 @@ describe('Request Supplies', () => {
       test('Empty list', async () => {
         const res = await api.get('/request-supplies', token);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(0);
+        expect(res.body.requestSupplies).toBeArrayOfSize(0);
       });
 
       test('With data', async () => {
-        await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 10,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 10,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         const res = await api.get('/request-supplies', token);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(1);
-        const [reqSupply] = res.body;
+        expect(res.body.requestSupplies).toBeArrayOfSize(1);
+        const [reqSupply] = res.body.requestSupplies;
         expect(reqSupply).toContainEntry(['id', 1]);
         expect(reqSupply).toContainEntry(['userId', loggedUser.id]);
         expect(reqSupply).toContainEntry(['supplyId', 1]);
@@ -59,18 +57,21 @@ describe('Request Supplies', () => {
       });
 
       test('Only pending', async () => {
-        await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Approved',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Approved',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
         await RequestSupply.create({
           userId: loggedUser.id,
           supplyId: 1,
@@ -81,13 +82,13 @@ describe('Request Supplies', () => {
 
         let res = await api.get('/request-supplies', token);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(2);
+        expect(res.body.requestSupplies).toBeArrayOfSize(2);
 
         res = await api.get('/request-supplies?status=Pending', token);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(1);
+        expect(res.body.requestSupplies).toBeArrayOfSize(1);
 
-        const [reqSupply] = res.body;
+        const [reqSupply] = res.body.requestSupplies;
         expect(reqSupply).toContainEntry(['id', 2]);
         expect(reqSupply).toContainEntry(['userId', loggedUser.id]);
         expect(reqSupply).toContainEntry(['supplyId', 1]);
@@ -101,27 +102,30 @@ describe('Request Supplies', () => {
       test('Empty list', async () => {
         const res = await api.get('/request-supplies', tokenAdmin);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(0);
+        expect(res.body.requestSupplies).toBeArrayOfSize(0);
       });
 
       test('With data', async () => {
-        await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 10,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 10,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         const res = await api.get('/request-supplies', tokenAdmin);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(1);
-        const [reqSupply] = res.body;
+        expect(res.body.requestSupplies).toBeArrayOfSize(1);
+        const [reqSupply] = res.body.requestSupplies;
         expect(reqSupply).toContainEntry(['id', 1]);
         expect(reqSupply).toContainEntry(['userId', loggedUser.id]);
         expect(reqSupply).toContainEntry(['supplyId', 1]);
@@ -131,18 +135,21 @@ describe('Request Supplies', () => {
       });
 
       test('Only pending', async () => {
-        await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Approved',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Approved',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
         await RequestSupply.create({
           userId: loggedUser.id,
           supplyId: 1,
@@ -153,13 +160,13 @@ describe('Request Supplies', () => {
 
         let res = await api.get('/request-supplies', tokenAdmin);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(2);
+        expect(res.body.requestSupplies).toBeArrayOfSize(2);
 
         res = await api.get('/request-supplies?status=Pending', tokenAdmin);
         expect(res.status).toBe(OK);
-        expect(res.body).toBeArrayOfSize(1);
+        expect(res.body.requestSupplies).toBeArrayOfSize(1);
 
-        const [reqSupply] = res.body;
+        const [reqSupply] = res.body.requestSupplies;
         expect(reqSupply).toContainEntry(['id', 2]);
         expect(reqSupply).toContainEntry(['userId', loggedUser.id]);
         expect(reqSupply).toContainEntry(['supplyId', 1]);
@@ -178,18 +185,21 @@ describe('Request Supplies', () => {
 
     describe('With User Token', () => {
       test('With data', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 10,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 10,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         const res = await api.get(`/request-supplies/${rs.id}`, token);
         expect(res.status).toBe(OK);
@@ -204,40 +214,49 @@ describe('Request Supplies', () => {
 
       test('Error when invalid id', async () => {
         const anotherUser = await builder.register({ email: 'juan@nieve.com' });
-        const rs = await RequestSupply.create({
-          userId: anotherUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Approved',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: anotherUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Approved',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         const res = await api.get(`/request-supplies/${rs.id}`, token);
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
-        expect(res.body).toContainEntry(['message', 'Request Supply not exists']);
+        expect(res.body).toContainEntry([
+          'message',
+          'Request Supply not exists',
+        ]);
       });
     });
 
     describe('With Admin Token', () => {
       test('With data', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 10,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 10,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         const res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
         expect(res.status).toBe(OK);
@@ -251,23 +270,29 @@ describe('Request Supplies', () => {
       });
 
       test('Error when invalid id', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Approved',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Approved',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         const res = await api.get(`/request-supplies/${rs.id + 1}`, tokenAdmin);
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
-        expect(res.body).toContainEntry(['message', 'Request Supply not exists']);
+        expect(res.body).toContainEntry([
+          'message',
+          'Request Supply not exists',
+        ]);
       });
     });
   });
@@ -280,18 +305,21 @@ describe('Request Supplies', () => {
 
     describe('With Token', () => {
       test('With data', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 10,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 10,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         let res = await api.get(`/request-supplies/${rs.id}`, token);
         expect(res.status).toBe(OK);
@@ -310,53 +338,70 @@ describe('Request Supplies', () => {
 
       test('Error when invalid id', async () => {
         const anotherUser = await builder.register({ email: 'juan@nieve.com' });
-        const rs = await RequestSupply.create({
-          userId: anotherUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Approved',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: anotherUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Approved',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         const res = await api.delete(`/request-supplies/${rs.id}`, token);
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
-        expect(res.body).toContainEntry(['message', 'Request Supply not exists']);
+        expect(res.body).toContainEntry([
+          'message',
+          'Request Supply not exists',
+        ]);
       });
     });
   });
 
   describe('PATCH /request-supplies/:id { "status": "Approved" }', () => {
     test('Without Token response error', async () => {
-      const res = await api.patch('/request-supplies/1', { status: 'Approved' }, token);
+      const res = await api.patch(
+        '/request-supplies/1',
+        { status: 'Approved' },
+        token
+      );
       expect(res).not.toBeValidToken();
     });
 
     describe('With Admin Token', () => {
       test('Approve when is Pending', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 10,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 10,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         let res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toContainEntry(['status', 'Pending']);
 
-        res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Approved' }, tokenAdmin);
+        res = await api.patch(
+          `/request-supplies/${rs.id}`,
+          { status: 'Approved' },
+          tokenAdmin
+        );
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
         expect(res.body).toContainEntry(['status', 'Approved']);
@@ -368,24 +413,31 @@ describe('Request Supplies', () => {
       });
 
       test('Reject when is Pending', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 10,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 10,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
         let res = await api.get(`/request-supplies/${rs.id}`, tokenAdmin);
         expect(res.status).toBe(OK);
         expect(res.body).toContainEntry(['status', 'Pending']);
 
-        res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Rejected' }, tokenAdmin);
+        res = await api.patch(
+          `/request-supplies/${rs.id}`,
+          { status: 'Rejected' },
+          tokenAdmin
+        );
         expect(res.status).toBe(OK);
         expect(res.body).toBeObject();
         expect(res.body).toContainEntry(['status', 'Rejected']);
@@ -397,63 +449,93 @@ describe('Request Supplies', () => {
       });
 
       test('Error when id not Pending', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Canceled',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Canceled',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
-        const res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Approved' }, tokenAdmin);
+        const res = await api.patch(
+          `/request-supplies/${rs.id}`,
+          { status: 'Approved' },
+          tokenAdmin
+        );
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
-        expect(res.body).toContainEntry(['message', 'Request Supply is not Pending']);
+        expect(res.body).toContainEntry([
+          'message',
+          'Request Supply is not Pending',
+        ]);
       });
 
       test('Error when status sent is invalid', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
-        const res = await api.patch(`/request-supplies/${rs.id}`, { status: 'Canceled' }, tokenAdmin);
+        const res = await api.patch(
+          `/request-supplies/${rs.id}`,
+          { status: 'Canceled' },
+          tokenAdmin
+        );
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
-        expect(res.body).toContainEntry(['message', 'Invalid Request Supply Status']);
+        expect(res.body).toContainEntry([
+          'message',
+          'Invalid Request Supply Status',
+        ]);
       });
 
       test('Error when invalid id', async () => {
-        const rs = await RequestSupply.create({
-          userId: loggedUser.id,
-          supply: { name: 'Gloves', stock: 1000 },
-          area: { name: 'The Citadel' },
-          amount: 30,
-          status: 'Pending',
-        }, {
-          include: [
-            { model: Supply, as: 'supply' },
-            { model: Area, as: 'area' },
-          ],
-        });
+        const rs = await RequestSupply.create(
+          {
+            userId: loggedUser.id,
+            supply: { name: 'Gloves', stock: 1000 },
+            area: { name: 'The Citadel' },
+            amount: 30,
+            status: 'Pending',
+          },
+          {
+            include: [
+              { model: Supply, as: 'supply' },
+              { model: Area, as: 'area' },
+            ],
+          }
+        );
 
-        const res = await api.patch(`/request-supplies/${rs.id + 1}`, { status: 'Approved' }, tokenAdmin);
+        const res = await api.patch(
+          `/request-supplies/${rs.id + 1}`,
+          { status: 'Approved' },
+          tokenAdmin
+        );
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
-        expect(res.body).toContainEntry(['message', 'Request Supply not exists']);
+        expect(res.body).toContainEntry([
+          'message',
+          'Request Supply not exists',
+        ]);
       });
     });
   });
@@ -472,7 +554,10 @@ describe('Request Supplies', () => {
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
         expect(res.body).toContainEntry(['message', 'Validation Errors']);
-        expect(res.body.errors).toIncludeAllMembers(['Invalid Area ID', 'Invalid Supply ID']);
+        expect(res.body.errors).toIncludeAllMembers([
+          'Invalid Area ID',
+          'Invalid Supply ID',
+        ]);
       });
 
       test('Data Validation (invalid data)', async () => {
@@ -486,7 +571,10 @@ describe('Request Supplies', () => {
         expect(res.status).toBe(BAD_REQUEST);
         expect(res.body).toContainEntry(['status', BAD_REQUEST]);
         expect(res.body).toContainEntry(['message', 'Validation Errors']);
-        expect(res.body.errors).toIncludeAllMembers(['Invalid Area ID', 'Invalid Supply ID']);
+        expect(res.body.errors).toIncludeAllMembers([
+          'Invalid Area ID',
+          'Invalid Supply ID',
+        ]);
       });
 
       test('Success Request Supplies', async () => {

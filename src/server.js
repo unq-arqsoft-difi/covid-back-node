@@ -1,19 +1,31 @@
 const apiExpressExporter = require('api-express-exporter');
-const cors       = require('cors');
-const morgan     = require('morgan');
-const express    = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const express = require('express');
 const bodyParser = require('body-parser');
-const { NOT_FOUND, INTERNAL_SERVER_ERROR } = require('http-status-codes').StatusCodes;
-const logger     = require('./lib/logger');
-const { morganAccess, morganAccessMs }  = require('./lib/morgan');
+const {
+  NOT_FOUND,
+  INTERNAL_SERVER_ERROR,
+} = require('http-status-codes').StatusCodes;
+const logger = require('./lib/logger');
+const { morganAccess, morganAccessMs } = require('./lib/morgan');
 const { jsonOK, jsonNotFound } = require('./lib/response-helpers');
+const paginate = require('express-paginate');
 
 const app = express();
 
 // Middleware
 app.use(cors());
-app.use(morgan('combined', { stream: { write: message => morganAccess.info(message) } }));
-app.use(morgan('short', { stream: { write: message => morganAccessMs.info(message) } }));
+app.use(
+  morgan('combined', {
+    stream: { write: (message) => morganAccess.info(message) },
+  })
+);
+app.use(
+  morgan('short', {
+    stream: { write: (message) => morganAccessMs.info(message) },
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use((req, res, next) => {
@@ -22,6 +34,7 @@ app.use((req, res, next) => {
   res.jsonNotFound = jsonNotFound;
   next();
 });
+app.use(paginate.middleware(10, 50));
 
 if (process.env.NODE_ENV !== 'test') {
   // api-express-exporter: metrics to prometheus
